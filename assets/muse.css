@@ -71,10 +71,42 @@
 .muse-button-float { background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
 .muse-button:active:not(:disabled) { transform: scale(.98); }
 .muse-button:disabled { cursor: not-allowed; color: var(--muse-muted); background: var(--muse-soft); }
+.muse-icon-controls { display: flex; flex-wrap: wrap; gap: 16px; padding-bottom: 40px; }
+.muse-icon-control {
+  --muse-icon-rest-opacity: 1; --muse-icon-active-opacity: 0;
+  position: relative; display: inline-flex; padding-bottom: 8px;
+}
+.muse-icon-button { width: 48px; height: 48px; padding: 0; border-radius: 16px; }
+.muse-icon-button[aria-pressed="true"] { color: var(--muse-primary); background: var(--muse-primary-soft); }
+.muse-icon-graphic { display: grid; width: 24px; height: 24px; }
+.muse-icon-graphic svg { grid-area: 1 / 1; width: 24px; height: 24px; transition: opacity var(--muse-duration-press) var(--muse-ease-out); }
+.muse-icon-idle { opacity: var(--muse-icon-rest-opacity); }
+.muse-icon-engaged { opacity: var(--muse-icon-active-opacity); }
+.muse-icon-control:has(:focus-visible),
+.muse-icon-control:has([aria-pressed="true"]),
+.muse-icon-control[data-pressed="true"],
+.muse-icon-control[data-touch-label="true"] { --muse-icon-rest-opacity: 0; --muse-icon-active-opacity: 1; }
+.muse-icon-label {
+  position: absolute; z-index: 5; top: 100%; left: 0; width: max-content;
+  max-width: min(18rem, calc(100vw - 32px)); padding: 6px 12px;
+  border-radius: var(--muse-radius-sm); background: var(--muse-surface); color: var(--muse-text);
+  box-shadow: var(--muse-shadow-float); font-size: .875rem; line-height: 1.5;
+  overflow-wrap: anywhere; visibility: hidden; opacity: 0; transform: translateY(-3px);
+  transition: opacity var(--muse-duration-menu), transform var(--muse-duration-menu) var(--muse-ease-out), visibility var(--muse-duration-menu);
+}
+.muse-icon-control[data-label-align="end"] .muse-icon-label { left: auto; right: 0; }
+.muse-icon-control:has(:focus-visible) .muse-icon-label,
+.muse-icon-control[data-touch-label="true"] .muse-icon-label { visibility: visible; opacity: 1; transform: translateY(0); }
+@media (hover: hover) {
+  .muse-icon-control:not([data-input="touch"]):hover { --muse-icon-rest-opacity: 0; --muse-icon-active-opacity: 1; }
+  .muse-icon-control:not([data-input="touch"]):hover .muse-icon-label { visibility: visible; opacity: 1; transform: translateY(0); }
+}
+.muse-icon-controls .muse-icon-control[data-label-dismissed="true"] .muse-icon-label { visibility: hidden; opacity: 0; }
 @media (hover: hover) {
   .muse-button:hover:not(:disabled) { background: #E9EBED; }
   .muse-button-primary:hover:not(:disabled) { background: var(--muse-primary-hover); }
   .muse-button-float:hover:not(:disabled) { background: var(--muse-soft); }
+  .muse-icon-button[aria-pressed="true"]:hover { background: var(--muse-primary-soft); }
 }
 .muse-panel { background: var(--muse-surface); border-radius: var(--muse-radius-panel); padding: 28px; box-shadow: var(--muse-shadow-float); }
 .muse-field { display: grid; gap: 8px; }
