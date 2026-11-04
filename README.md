@@ -20,9 +20,15 @@ v1.1 明确加入：**默认图标优先 → 悬停/聚焦/触摸时图案变化
 
 具体证据和用途见 [design-system.md](references/design-system.md) 与 [sources.md](references/sources.md)。
 
-## 安装到 Claude Code
+## 安装
 
-这是单技能仓库，根目录就是 `SKILL.md`。个人级安装：
+**一句话安装**：复制下面这句发给你在用的 AI 助手（WorkBuddy、Claude Code、Codex 等），它会自动完成安装：
+
+```text
+请根据 https://raw.githubusercontent.com/smiler488/muse-design-skill/main/install.md，安装 muse-design。
+```
+
+手动安装（以 Claude Code 为例）：这是单技能仓库，根目录就是 `SKILL.md`。个人级安装：
 
 ```bash
 mkdir -p ~/.claude/skills
