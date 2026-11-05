@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page layer example</title>
+  <link rel="stylesheet" href="muse.css">
+  <style>
+    /* Demo-only layout; all colors and type come from muse.css */
+    .demo-header { position: sticky; top: 0; z-index: 10; background: rgb(255 255 255 / 92%); }
+    .demo-nav { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
+    .demo-nav nav { display: flex; gap: 4px; }
+    .demo-nav nav a { padding: 4px 12px; border-radius: 24px; color: var(--muse-text); font-size: .9375rem; text-decoration: none; }
+    .demo-nav nav a:hover { background: var(--muse-soft); }
+    .demo-art { aspect-ratio: 1; display: grid; place-items: center; font-size: 4rem; }
+    .demo-faq .muse-accordion-trigger { font-weight: 500; font-size: clamp(1.25rem, 2vw, 1.75rem); }
+    .demo-card-head { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
+    .demo-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--muse-text); color: #fff; font-size: .875rem; }
+    @media (max-width: 700px) { .demo-nav nav { display: none; } }
+  </style>
+</head>
+<body class="muse-theme muse-layer-page">
+  <header class="demo-header">
+    <div class="muse-wide demo-nav">
+      <strong>Field Notebook</strong>
+      <nav aria-label="Primary"><a href="#features">Features</a><a href="#cards">Data</a><a href="#faq">FAQ</a></nav>
+      <a class="muse-button muse-button-primary" href="#features">Open notebook</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="muse-section" id="features">
+      <div class="muse-wide">
+        <div class="muse-section-head">
+          <div>
+            <p class="muse-eyebrow">Features</p>
+            <h2>Measure in the field, keep the context</h2>
+            <p class="muse-lead">Every record carries the location, the method and the settings that produced it, so a value can be traced months later.</p>
+          </div>
+          <a class="muse-button muse-button-primary muse-button-lg" href="#cards">Try it</a>
+        </div>
+        <div class="muse-split">
+          <div class="muse-accordion" data-accordion>
+            <div class="muse-accordion-item">
+              <button class="muse-accordion-trigger" aria-expanded="true" aria-controls="p1" data-art="🌿">Capture with one tap</button>
+              <div class="muse-accordion-panel" id="p1"><p>Orientation, position and time are stored together; nothing leaves the device until you export.</p></div>
+            </div>
+            <div class="muse-accordion-item">
+              <button class="muse-accordion-trigger" aria-expanded="false" aria-controls="p2" data-art="🧭">Know where every value came from</button>
+              <div class="muse-accordion-panel" id="p2" hidden><p>Exports include a parameter record with versions and checksums.</p></div>
+            </div>
+            <div class="muse-accordion-item">
+              <button class="muse-accordion-trigger" aria-expanded="false" aria-controls="p3" data-art="📦">Share in a standard format</button>
+              <div class="muse-accordion-panel" id="p3" hidden><p>Spreadsheets follow a community template, so repositories accept them as they are.</p></div>
+            </div>
+          </div>
+          <div class="muse-media demo-art" data-art-target aria-hidden="true">🌿</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="muse-section" id="cards">
+      <div class="muse-wide">
+        <p class="muse-eyebrow" style="margin-bottom:32px">Data handling</p>
+        <div class="muse-card-grid">
+          <article class="muse-card">
+            <div class="demo-card-head"><span class="demo-dot" aria-hidden="true">1</span><h3>Local by default</h3></div>
+            <p>Records stay in the browser. Export is an explicit action, and the file is yours.</p>
+          </article>
+          <article class="muse-card">
+            <div class="demo-card-head"><span class="demo-dot" aria-hidden="true">2</span><h3>Reproducible exports</h3></div>
+            <p>Each file comes with the settings and tool version that produced it.</p>
+            <p style="margin-top:24px"><a class="muse-link-arrow" href="#faq">Learn more</a></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="muse-section demo-faq" id="faq">
+      <div class="muse-wide">
+        <p class="muse-eyebrow" style="margin-bottom:16px">Frequently asked questions</p>
+        <div class="muse-accordion" data-accordion data-multi>
+          <div class="muse-accordion-item">
+            <button class="muse-accordion-trigger" aria-expanded="false" aria-controls="f1">Does it work offline?</button>
+            <div class="muse-accordion-panel" id="f1" hidden><p>Yes, after the first visit.</p></div>
+          </div>
+          <div class="muse-accordion-item">
+            <button class="muse-accordion-trigger" aria-expanded="false" aria-controls="f2">Which phones are supported?</button>
+            <div class="muse-accordion-panel" id="f2" hidden><p>Any browser with motion sensors; permission is requested on tap.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Accordion: one open item (feature list) or many (FAQ, data-multi).
+    // The feature list also swaps the paired media, like the product page.
+    for (const group of document.querySelectorAll("[data-accordion]")) {
+      const multi = group.hasAttribute("data-multi");
+      const target = group.closest(".muse-split")?.querySelector("[data-art-target]");
+      group.addEventListener("click", (event) => {
+        const trigger = event.target.closest(".muse-accordion-trigger");
+        if (!trigger) return;
+        const open = trigger.getAttribute("aria-expanded") !== "true";
+        if (!multi && !open) return; // feature list keeps one item open
+        if (!multi) {
+          for (const other of group.querySelectorAll(".muse-accordion-trigger")) {
+            other.setAttribute("aria-expanded", "false");
+            document.getElementById(other.getAttribute("aria-controls")).hidden = true;
+          }
+        }
+        trigger.setAttribute("aria-expanded", String(open));
+        document.getElementById(trigger.getAttribute("aria-controls")).hidden = !open;
+        if (open && target && trigger.dataset.art) target.textContent = trigger.dataset.art;
+      });
+    }
+  </script>
+</body>
+</html>

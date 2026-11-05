@@ -1,6 +1,6 @@
 # 来源、采样与边界
 
-版本：1.1 · 整理日期：2026-11-02。
+版本：1.2 · 整理日期：2026-11-05（1.1：2026-11-02）。
 
 ## 一手来源
 
@@ -9,7 +9,11 @@
 - [Emil Kowalski：Good vs Great Animations](https://emilkowal.ski/ui/good-vs-great-animations) — 学习动画起点、缓动与协调；不是 Muse 技术实现的证明。
 - [Apple：Animate with springs](https://developer.apple.com/videos/play/wwdc2023/10158/) — 学习位置与速度连续性；不是 Muse 使用某套动画库的证明。
 
-## 颜色采样
+## 官方产品页实测（v1.2）
+
+- [Muse 官方产品页](https://ai.meta.com/muse/) — 2026-11-05 用无头 Chrome 在 1440×900 与 390×844 视口打开，逐段滚动后读取 `getComputedStyle`（字号、行高、字重、颜色、圆角、内边距）与元素尺寸，并逐屏截图核对版式。结果整理在 [product-page.md](product-page.md)。只记录渲染结果；不下载字体文件、视频或图片，不提取源码。页面使用的 Optimistic 字体为 Meta 专有，本技能不附带也不建议使用。
+
+## 颜色采样（应用层）
 
 取 Muse 官方文章链接的原始 PNG，读取其 RGB 像素，结合图中区域识别用途。没有采集源码或私有设计文件，没有把浏览器截图的色彩管理结果当作官方 token。
 
