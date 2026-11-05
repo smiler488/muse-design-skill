@@ -139,6 +139,7 @@
   --muse-surface: #FFFFFF;
   --muse-soft: #F1F4F7;
   --muse-band: #F6F6F6;
+  --muse-soft-strong: #E7EBEF;
   --muse-text: #0A1317;
   --muse-muted: #5D6C7B;
   --muse-border: #DADDE1;
@@ -194,6 +195,52 @@
 .muse-accordion-panel { padding: 0 0 28px; color: var(--muse-muted); max-width: 32rem; }
 .muse-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
 @media (max-width: 900px) { .muse-split { grid-template-columns: 1fr; } }
+
+/* ── v1.3: components proven on a research site ───────────────────────── */
+/* Two-column hero: copy left (eyebrow, h1, lead, one capsule + arrow links),
+   a soft media panel right; one column under 860px */
+.muse-hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(32px, 5vw, 80px); align-items: center; padding-block: clamp(32px, 6vh, 72px) var(--muse-section-y, 64px); }
+.muse-hero h1 { margin-top: 12px; }
+.muse-hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; margin-top: 32px; }
+.muse-hero-media { display: grid; place-items: center; aspect-ratio: 1; max-height: 34rem; border-radius: var(--muse-radius-feature, 32px); background: var(--muse-soft); overflow: hidden; }
+@media (max-width: 860px) { .muse-hero { grid-template-columns: 1fr; } .muse-hero-media { width: min(100%, 26rem); } }
+
+/* Paired guide/tool actions: the guide is a soft-blue capsule whose book
+   opens on hover/focus (icon changes graphic, label stays visible); the
+   tool action is the blue capsule whose arrow moves forward */
+.muse-guide {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px 0 16px;
+  border-radius: var(--muse-radius-pill); color: var(--muse-primary); background: var(--muse-primary-soft);
+  font-weight: 600; text-decoration: none;
+  transition: background-color var(--muse-duration-press), color var(--muse-duration-press), transform var(--muse-duration-press) var(--muse-ease-out);
+}
+.muse-guide:hover, .muse-guide:focus-visible { color: var(--muse-on-primary); background: var(--muse-primary); }
+.muse-guide:active { transform: scale(.98); }
+.muse-guide-icon { display: grid; width: 20px; height: 20px; }
+.muse-guide-icon svg { grid-area: 1 / 1; width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transition: opacity var(--muse-duration-press); }
+.muse-guide-icon .is-open { opacity: 0; }
+.muse-guide:hover .is-closed, .muse-guide:focus-visible .is-closed { opacity: 0; }
+.muse-guide:hover .is-open, .muse-guide:focus-visible .is-open { opacity: 1; }
+.muse-button-forward::after { content: ""; width: 8px; height: 8px; border-top: 1.75px solid currentColor; border-right: 1.75px solid currentColor; transform: rotate(45deg); transition: transform var(--muse-duration-press) var(--muse-ease-out); }
+.muse-button-forward:hover::after, .muse-button-forward:focus-visible::after { transform: translateX(3px) rotate(45deg); }
+
+/* Research-tool shell: unboxed header, status line with a validation
+   disclosure, soft borderless panels whose fields stay white */
+.muse-tool-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; padding-block: 24px 40px; border-bottom: 1px solid var(--muse-border); }
+.muse-back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; color: var(--muse-text); font-weight: 500; text-decoration: none; }
+.muse-back::before { content: ""; width: 8px; height: 8px; border-bottom: 1.5px solid currentColor; border-left: 1.5px solid currentColor; transform: rotate(45deg); }
+.muse-status-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; color: var(--muse-muted); font-size: .875rem; }
+.muse-details { flex-basis: 100%; max-width: 44rem; }
+.muse-details summary { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--muse-primary); font-weight: 600; list-style: none; cursor: pointer; }
+.muse-details summary::-webkit-details-marker { display: none; }
+.muse-details summary::before { content: ""; width: 12px; height: 12px; background: linear-gradient(currentColor 0 0) center / 12px 1.5px no-repeat, linear-gradient(currentColor 0 0) center / 1.5px 12px no-repeat; transition: background-size var(--muse-duration-menu) var(--muse-ease-out); }
+.muse-details[open] summary::before { background-size: 12px 1.5px, 1.5px 0; }
+.muse-details p { margin-top: 8px; color: var(--muse-muted); }
+.muse-tool-panel { display: grid; align-content: start; gap: 16px; padding: 24px; border-radius: var(--muse-radius-card, 24px); background: var(--muse-soft); }
+.muse-tool-panel .muse-input { background: var(--muse-surface); }
+/* Secondary buttons on a soft panel turn white so they stay visible */
+.muse-tool-panel .muse-button:not(.muse-button-primary) { background: var(--muse-surface); }
+.muse-tool-panel .muse-button:disabled { color: var(--muse-muted); background: var(--muse-soft-strong, #E7EBEF); }
 
 @media (max-width: 600px) {
   .muse-page { width: min(100% - 32px, 1080px); }

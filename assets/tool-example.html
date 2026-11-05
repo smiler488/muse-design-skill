@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tool page example</title>
+  <link rel="stylesheet" href="muse.css">
+  <style>
+    /* Demo-only layout; colours, type and components come from muse.css */
+    .demo-art { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 5rem; background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
+    .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 16px; margin-top: 40px; }
+    .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
+    .demo-row .muse-field { flex: 1 1 14rem; }
+    .demo-maturity { padding: 2px 10px; border-radius: 999px; color: var(--muse-success); background: var(--muse-success-soft); font-weight: 600; }
+    .demo-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  </style>
+</head>
+<body class="muse-theme muse-layer-page">
+  <main class="muse-wide">
+    <!-- 1. Two-column hero -->
+    <section class="muse-hero" aria-labelledby="hero-title">
+      <div>
+        <p class="muse-eyebrow">Field notebook</p>
+        <h1 id="hero-title">Measure leaves where they grow</h1>
+        <p class="muse-lead" style="margin-top:20px">Browser tools that record field measurements with their method and settings, so every value can be traced.</p>
+        <div class="muse-hero-actions">
+          <a class="muse-button muse-button-primary muse-button-lg" href="#tool">Open the recorder</a>
+          <a class="muse-link-arrow" href="#tool">All tools</a>
+          <a class="muse-link-arrow" href="#tool">About the project</a>
+        </div>
+      </div>
+      <div class="muse-hero-media" aria-hidden="true"><div class="demo-art">🌿</div></div>
+    </section>
+
+    <!-- 2. Research-tool shell -->
+    <section class="muse-section" id="tool" aria-labelledby="tool-title">
+      <a class="muse-back" href="#hero-title">All tools</a>
+      <header class="muse-tool-head">
+        <div style="max-width:52rem">
+          <p class="muse-eyebrow">Data capture</p>
+          <h1 id="tool-title" style="font-size:clamp(2.25rem,3.4vw,3rem)">Leaf Angle Recorder</h1>
+          <p class="muse-lead" style="margin-top:16px">Record leaf inclination with the phone laid on the blade, then export a CSV with the method attached.</p>
+          <div class="muse-status-line">
+            <span class="demo-maturity">Stable</span>
+            <span>Version 2026.11.0</span><span aria-hidden="true">·</span><span>Validated 2026-11-05</span>
+            <details class="muse-details">
+              <summary>How it was validated</summary>
+              <p>Inclination checked against an explicit rotation for 1,000 random poses: maximum error 0.01°.</p>
+            </details>
+          </div>
+        </div>
+        <!-- 3. The paired guide action: same capsule on every tool page -->
+        <a class="muse-guide" href="#guide">
+          <span class="muse-guide-icon" aria-hidden="true">
+            <svg class="is-closed" viewBox="0 0 24 24"><path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v15H6.5A1.5 1.5 0 0 0 5 19.5Z"/><path d="M5 19.5A1.5 1.5 0 0 0 6.5 21H19v-3"/><path d="M9 7h6"/></svg>
+            <svg class="is-open" viewBox="0 0 24 24"><path d="M12 6.5C10.4 5 8 4.5 3 4.5v13c5 0 7.4.5 9 2 1.6-1.5 4-2 9-2v-13c-5 0-7.4.5-9 2Z"/><path d="M12 6.5v13"/></svg>
+          </span>
+          <span>Read the guide</span>
+        </a>
+      </header>
+
+      <div class="demo-grid">
+        <form class="muse-tool-panel" onsubmit="return false" aria-labelledby="capture-title">
+          <h2 id="capture-title" style="font-size:1.125rem;font-weight:500">Capture</h2>
+          <div class="demo-row">
+            <label class="muse-field">Sample ID<input class="muse-input" placeholder="Plot-04-Leaf-12"></label>
+          </div>
+          <div class="demo-actions">
+            <button class="muse-button muse-button-primary" type="button">Capture sample</button>
+            <button class="muse-button" type="button">Enable sensors</button>
+            <button class="muse-button" type="button" disabled>Export CSV</button>
+          </div>
+        </form>
+        <section class="muse-tool-panel" aria-labelledby="reading-title">
+          <h2 id="reading-title" style="font-size:1.125rem;font-weight:500">Current reading</h2>
+          <p class="muse-muted">No reading yet. Enable sensors, lay the phone on the leaf and capture.</p>
+        </section>
+      </div>
+    </section>
+
+    <!-- 4. The guide page's matching "open tool" action -->
+    <section class="muse-section" id="guide" aria-labelledby="guide-title">
+      <p class="muse-eyebrow">Data capture · Practical guide</p>
+      <h2 id="guide-title">Leaf Angle Recorder</h2>
+      <p class="muse-lead" style="margin:16px 0 24px">The tool's one name is used on its card, its page and this guide.</p>
+      <a class="muse-button muse-button-primary muse-button-forward" href="#tool">Open tool</a>
+    </section>
+  </main>
+</body>
+</html>

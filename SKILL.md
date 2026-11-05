@@ -33,6 +33,7 @@ description: Design, implement, or review web and app interfaces in the Muse-ins
 - [assets/muse.css](assets/muse.css)：带 `--muse-*` 命名空间的颜色、尺寸、动效变量和基础组件。优先映射进现有设计变量；需要时复制采用的组件，避免引入冲突的全局样式。
 - [assets/example.html](assets/example.html)：原创、无外部依赖的颜色与交互样例。用于理解层级和状态，不是个人主页模板，也不是真实 Muse 截图。
 - [assets/page-example.html](assets/page-example.html)：产品页层样例（`muse-layer-page`）：眉标与区块头、手风琴配图、无边框特性卡片、问答、圆圈箭头链接。
+- [assets/tool-example.html](assets/tool-example.html)：v1.3 两栏首屏、科研工具外壳、成对的「教程 / 打开工具」按钮、验证说明展开行、灰面板上的白色次级按钮。
 - [assets/icon-controls.js](assets/icon-controls.js)：图标控件的文字显露、触摸反馈与 Escape 收起辅助行为；业务动作仍由具体按钮或链接实现。
 - 修改变量后运行 `python3 scripts/check_tokens.py` 检查两层的关键色对。它不替代实际页面检查。
 
@@ -44,6 +45,7 @@ description: Design, implement, or review web and app interfaces in the Muse-ins
 - 主要链接、导航、展开、关闭、表单等实际工作，键盘可达，焦点可见；关闭浮层后焦点回到触发入口。
 - 普通文字与实际背景至少达到 4.5:1；有意义的控件边界/图标至少 3:1。浅色装饰边框不能成为识别输入框的唯一方式。
 - 内容区域与操作区域有区别；没有把所有内容变成胶囊或卡片；蓝色、阴影和插图仍然节制。
+- 同一工具/对象在卡片、页面、教程中只用一个名字。
 - 产品页层：标题不超过 500 字重；每个大区块有眉标；区块之间是细线而不是外框；主按钮是蓝色胶囊（不是黑色）；次级动作是圆圈箭头链接或灰底胶囊。
 - 检查正常、悬停、按下、选中、禁用、加载、空和错误状态中实际存在的部分。没有后端时不伪造提交成功。
 - 图标控件在悬停/聚焦/触摸时确实改变图形并显露功能文字；图标名称始终可被辅助技术读取。验证单次触控执行、触摸取消、真实选中状态和长标签，不让文字出现推走点击目标。
