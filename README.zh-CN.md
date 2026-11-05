@@ -2,6 +2,7 @@
 
 [English](README.md) | 中文
 
+[![CI](https://github.com/smiler488/muse-design-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/smiler488/muse-design-skill/actions/workflows/validate.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) ![Agent Skill](https://img.shields.io/badge/Agent_Skill-informational)
 给 Claude Code 等支持 Agent Skills 的工具使用的 **Muse 风格网页与 app 设计技能**。重点是可复用的颜色、排版、空间、组件状态与交互规则，适用于个人网站改造和应用界面设计。
 
 v1.2 新增**产品页层**：在 Muse 官方产品页实测排版与版式（字号阶梯、500 字重标题、蓝色眉标、冷灰蓝说明文字、整宽细线分区、无边框灰底卡片、手风琴配图、问答），用于个人网站与科研工具页；应用层保持不变，见 [product-page.md](references/product-page.md) 与 [page-example.html](assets/page-example.html)。

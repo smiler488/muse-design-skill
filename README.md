@@ -2,6 +2,7 @@
 
 English | [中文](README.zh-CN.md)
 
+[![CI](https://github.com/smiler488/muse-design-skill/actions/workflows/validate.yml/badge.svg)](https://github.com/smiler488/muse-design-skill/actions/workflows/validate.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) ![Agent Skill](https://img.shields.io/badge/Agent_Skill-informational)
 An Agent Skill for designing, building or reviewing web and app interfaces in the style of Meta's Muse app. It covers near-white pages, weight-500 headings with blue uppercase eyebrows, slate-grey body text and full-width hairline sections. It also covers soft borderless cards, capsule buttons, icon-first controls that change shape and reveal their label on hover or focus, and details that open next to the item they belong to.
 
 I put it together while redesigning my personal and research-tool pages. I wanted the calm, readable feel of the Muse product page without copying any of its assets. The colours were sampled from public images. Sizes, spacing, shadows and motion are my own reference values, not Meta's internal specification. This is an independent project and is not affiliated with Meta.
