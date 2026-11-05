@@ -12,6 +12,13 @@ There are two layers:
 - **Product-page layer** (default for websites): white `#FFFFFF`, headings `#0A1317`, body `#5D6C7B`, action `#0457CB`, dividers `#DADDE1`, cards `#F1F4F7`, a 64/48/36/28/24/18/16/14 type scale, wide layout (~1376 px) with a narrow text column (~52 rem).
 - **App layer** (chat, activity panels): page `#FCFCFC`, surface `#FFFFFF`, soft controls `#F3F4F5`, text `#111112`, secondary `#67696C`, action `#0064D4`.
 
+<p>
+  <img src="docs/page-example.png" alt="Product-page layer example" width="49%">
+  <img src="docs/app-example.png" alt="App layer example" width="49%">
+</p>
+
+Left: product-page layer (`assets/page-example.html`). Right: app layer and palette (`assets/example.html`). Both pages are original demos with no external dependencies.
+
 ## Install
 
 Tell your assistant (Claude Code, Codex, WorkBuddy, …):

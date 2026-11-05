@@ -29,6 +29,13 @@ v1.1 明确加入：**默认图标优先 → 悬停/聚焦/触摸时图案变化
 
 具体证据和用途见 [design-system.md](references/design-system.md) 与 [sources.md](references/sources.md)。
 
+<p>
+  <img src="docs/page-example.png" alt="产品页层示例" width="49%">
+  <img src="docs/app-example.png" alt="应用层示例" width="49%">
+</p>
+
+左：产品页层（`assets/page-example.html`）；右：应用层与配色（`assets/example.html`）。两页都是原创样例，不依赖任何外部资源。
+
 ## 安装
 
 **一句话安装**：复制下面这句发给你在用的 AI 助手（WorkBuddy、Claude Code、Codex 等），它会自动完成安装：
