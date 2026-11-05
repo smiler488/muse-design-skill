@@ -1,6 +1,10 @@
 ---
 name: muse-design
 description: Design, implement, or review web and app interfaces in the Muse-inspired style — white pages with weight-500 headings and blue uppercase eyebrows, slate-gray copy, full-width hairline sections, soft borderless cards, accordions with paired media, capsule buttons, icon-first controls that change graphic and reveal labels, and progressive disclosure. Covers both the app layer and the product-page layer measured on the official Muse page. Use when the user requests Muse-like design, 同款 Muse 风格, or applies this skill to a website, personal site, research tools or an application.
+license: MIT
+metadata:
+  author: Liangchao Deng (smiler488)
+  version: "1.2.1"
 ---
 
 # Muse-inspired interface design
