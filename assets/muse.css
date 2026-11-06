@@ -374,10 +374,15 @@
 .muse-link-arrow { display: inline-flex; align-items: center; gap: 10px; color: var(--muse-primary); font-size: var(--muse-body); line-height: var(--muse-body-lh); font-weight: var(--muse-weight-medium); text-decoration: none; }
 .muse-link-arrow::before {
   content: ""; width: 32px; height: 32px; flex: none; border: 1px solid var(--muse-border); border-radius: 50%;
-  background: center / 12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230457CB' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5'/%3E%3C/svg%3E");
+  /* Masked, not painted: a data: URI would bake the stroke colour in and the
+     arrow would keep the light theme's blue on a dark page. */
+  background-color: currentColor;
+  -webkit-mask: center / 12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5'/%3E%3C/svg%3E");
+  mask: center / 12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%23000' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5'/%3E%3C/svg%3E");
   transition: background-color var(--muse-duration-press);
 }
-.muse-link-arrow:hover::before { background-color: var(--muse-primary-soft); }
+/* The ring, not the glyph, is what reacts to hover. */
+.muse-link-arrow:hover::before { border-color: currentColor; }
 /* Feature card: soft fill, large radius, no border, no shadow */
 .muse-card { padding: 24px; border-radius: var(--muse-radius-card); background: var(--muse-soft); }
 .muse-card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: 32px; }
@@ -540,6 +545,105 @@
   0%   { opacity: 0; transform: translateY(8px); }
   60%  { opacity: 1; }
   100% { opacity: 1; transform: none; }
+}
+
+/* ── Dark theme ────────────────────────────────────────────────────────────
+   Measured from the .dark token block platform.muse.ai serves (2026-11-06).
+   Two deliberate overrides, both because Muse's own values miss AA, the same
+   way its light tertiary does: the third text level is lightened to #f1f7ff80
+   (Muse's ai-gray-dark-a700 is 3.4:1), and the control border is strengthened
+   to #ffffff57 so a field is still findable.
+
+   The token list is written twice on purpose — once for an explicit
+   data-theme="dark", once for the system preference unless the page has
+   explicitly asked for light. check_tokens.py asserts the two lists stay
+   identical, so they cannot drift apart. */
+:root[data-theme="dark"] .muse-theme,
+.muse-theme[data-theme="dark"],
+.muse-theme.muse-dark {
+  color-scheme: dark;
+  /* Surfaces. In dark the page is the DARKEST layer and a raised surface is
+     LIGHTER — elevation reads as a lighter fill, not as a shadow, because a
+     shadow has nothing to darken. */
+  --muse-bg: #181819;               /* ai-gray-1075 */
+  --muse-surface: #28292b;          /* ai-gray-1000 */
+  --muse-soft: #28292b;
+  --muse-band: #1F1F20;             /* ai-gray-1050 */
+  --muse-soft-strong: #323435;      /* ai-gray-950 */
+  /* Text: translucent near-WHITE, mirroring the light theme's structure. */
+  --muse-text: #FFFFFF;                      /* 17.7:1 on the page */
+  --muse-muted: #f2f7ff87;                   /* ai-gray-dark-a550, 5.4:1 */
+  --muse-text-tertiary: #f1f7ff80;           /* 5.0:1 — see note below */
+  --muse-text-quaternary: #f1f6ff61;         /* decoration only, 3.4:1 */
+  --muse-border: #ffffff1f;                  /* white-a100, hairline */
+  --muse-control-border: #ffffff57;          /* 3.1:1, so a field is findable */
+  /* Accent. The blue lightens; and because white on it is only 3.2:1, the
+     label on a filled button flips to the near-black. */
+  --muse-primary: #1793FF;          /* blue-500, 5.6:1 on the page */
+  --muse-primary-hover: #2D9DFF;    /* blue-450 — hover moves AWAY from the bg */
+  --muse-primary-soft: #1793ff1f;
+  --muse-on-primary: #111112;       /* NOT #FFFFFF: white on blue-500 is 3.2:1 */
+  --muse-success: #07B123;
+  --muse-success-soft: #07b1231f;
+  --muse-danger: #FA4758;
+  --muse-danger-soft: #fa47581f;
+  /* Washes, scrim and glass all invert. */
+  --muse-wash-hover: #ffffff26;     /* white-a150 */
+  --muse-wash-active: #ffffff36;    /* white-a250 */
+  --muse-press-brightness: 1.15;    /* dark controls brighten under the finger */
+  --muse-scrim: #00000099;          /* black-a500 */
+  --muse-material-ultrathin: #00000040;
+  --muse-material-thin: #0000004d;  /* black-a400 */
+  --muse-material-regular: #00000080;
+  --muse-material-thick: #000000b3;
+  /* Shadows stay, but they are the secondary cue here. */
+  --muse-elevation-1: 0 2px 8px 0 #00000066, 0 2px 16px 0 #00000040;
+  --muse-elevation-2: 0 4px 12px 0 #00000080, 0 6px 24px 0 #00000066;
+  --muse-elevation-3: 0 6px 16px 0 #00000099, 0 8px 32px 0 #00000080;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .muse-theme:not([data-theme="light"]),
+  .muse-theme:root:not([data-theme="light"]) {
+    color-scheme: dark;
+    /* Surfaces. In dark the page is the DARKEST layer and a raised surface is
+       LIGHTER — elevation reads as a lighter fill, not as a shadow, because a
+       shadow has nothing to darken. */
+    --muse-bg: #181819;               /* ai-gray-1075 */
+    --muse-surface: #28292b;          /* ai-gray-1000 */
+    --muse-soft: #28292b;
+    --muse-band: #1F1F20;             /* ai-gray-1050 */
+    --muse-soft-strong: #323435;      /* ai-gray-950 */
+    /* Text: translucent near-WHITE, mirroring the light theme's structure. */
+    --muse-text: #FFFFFF;                      /* 17.7:1 on the page */
+    --muse-muted: #f2f7ff87;                   /* ai-gray-dark-a550, 5.4:1 */
+    --muse-text-tertiary: #f1f7ff80;           /* 5.0:1 — see note below */
+    --muse-text-quaternary: #f1f6ff61;         /* decoration only, 3.4:1 */
+    --muse-border: #ffffff1f;                  /* white-a100, hairline */
+    --muse-control-border: #ffffff57;          /* 3.1:1, so a field is findable */
+    /* Accent. The blue lightens; and because white on it is only 3.2:1, the
+       label on a filled button flips to the near-black. */
+    --muse-primary: #1793FF;          /* blue-500, 5.6:1 on the page */
+    --muse-primary-hover: #2D9DFF;    /* blue-450 — hover moves AWAY from the bg */
+    --muse-primary-soft: #1793ff1f;
+    --muse-on-primary: #111112;       /* NOT #FFFFFF: white on blue-500 is 3.2:1 */
+    --muse-success: #07B123;
+    --muse-success-soft: #07b1231f;
+    --muse-danger: #FA4758;
+    --muse-danger-soft: #fa47581f;
+    /* Washes, scrim and glass all invert. */
+    --muse-wash-hover: #ffffff26;     /* white-a150 */
+    --muse-wash-active: #ffffff36;    /* white-a250 */
+    --muse-press-brightness: 1.15;    /* dark controls brighten under the finger */
+    --muse-scrim: #00000099;          /* black-a500 */
+    --muse-material-ultrathin: #00000040;
+    --muse-material-thin: #0000004d;  /* black-a400 */
+    --muse-material-regular: #00000080;
+    --muse-material-thick: #000000b3;
+    /* Shadows stay, but they are the secondary cue here. */
+    --muse-elevation-1: 0 2px 8px 0 #00000066, 0 2px 16px 0 #00000040;
+    --muse-elevation-2: 0 4px 12px 0 #00000080, 0 6px 24px 0 #00000066;
+    --muse-elevation-3: 0 6px 16px 0 #00000099, 0 8px 32px 0 #00000080;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

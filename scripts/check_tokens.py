@@ -172,11 +172,42 @@ def check_motion(css):
     failed |= not fade_ok
     print(f'{"PASS" if fade_ok else "FAIL"} fade curve is linear '
           f'(opacity takes no easing)')
-    levels = re.findall(r'--muse-elevation-[123]\s*:\s*([^;]+);', css)
-    tinted = len(levels) == 3 and all(l.count(',') >= 1 and '#111112' in l for l in levels)
+    # Light theme first, then the dark override; take each step's first
+    # declaration so the dark block does not shadow the light one.
+    levels = {}
+    for step, value in re.findall(r'--muse-elevation-([123])\s*:\s*([^;]+);', css):
+        levels.setdefault(step, value)
+    tinted = (len(levels) == 3
+              and all(v.count(',') >= 1 and '#111112' in v for v in levels.values()))
     failed |= not tinted
-    print(f'{"PASS" if tinted else "FAIL"} 3 elevation steps, two-layer, tinted #111112')
+    print(f'{"PASS" if tinted else "FAIL"} 3 light elevation steps, two-layer, tinted #111112')
     return failed
+
+
+DARK_SELECTORS = (
+    r':root\[data-theme="dark"\] \.muse-theme,[^{]*\{([^{}]*)\}',
+    r'\.muse-theme:root:not\(\[data-theme="light"\]\)\s*\{([^{}]*)\}',
+)
+
+
+def check_dark_parity(css):
+    """The explicit and the system dark blocks declare the same tokens."""
+    blocks = []
+    for pattern in DARK_SELECTORS:
+        found = re.search(pattern, css)
+        if not found:
+            print(f'FAIL dark block not found: {pattern[:40]}...')
+            return True
+        blocks.append(dict(re.findall(r'(--muse-[\w-]+)\s*:\s*([^;]+);', found.group(1))))
+    explicit, system = ({k: v.strip() for k, v in b.items()} for b in blocks)
+    same = explicit == system
+    if same:
+        print(f'PASS dark blocks identical ({len(explicit)} tokens declared twice)')
+        return False
+    for key in sorted(set(explicit) | set(system)):
+        if explicit.get(key) != system.get(key):
+            print(f'FAIL dark drift {key}: explicit={explicit.get(key)} system={system.get(key)}')
+    return True
 
 
 def main():
@@ -191,13 +222,22 @@ def main():
                 print(f'FAIL missing token: {foreground} / {background}')
                 failed = True
                 continue
-            ratio = contrast(tokens[foreground], tokens[background])
+            backdrop = tokens[background]
+            if len(backdrop.lstrip('#')) == 8:
+                # A translucent panel is only ever seen over the page, so
+                # measure the text against what the eye actually gets.
+                page = tokens.get('bg', '#FFFFFF')
+                r, g, b, _ = over(backdrop, page)
+                backdrop = '#%02x%02x%02x' % (round(r * 255), round(g * 255), round(b * 255))
+            ratio = contrast(tokens[foreground], backdrop)
             passed = ratio >= required
             failed |= not passed
             print(f'{"PASS" if passed else "FAIL"} {foreground:16} / {background:16} '
                   f'{ratio:.2f}:1 (requires {required}:1)')
     print('== type ramp')
     failed |= check_type(css)
+    print('== dark theme')
+    failed |= check_dark_parity(css)
     print('== accents')
     failed |= check_accents(css)
     print('== motion & elevation')
