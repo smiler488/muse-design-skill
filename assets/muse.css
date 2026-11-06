@@ -128,6 +128,9 @@
      drop, not a scale; focus is a 2px outline held 2px off the control. */
   --muse-wash-hover: #00000013;
   --muse-wash-active: #0000001a;
+  /* The wash as a layer over the element's own fill (v1.7). */
+  --muse-hover-layer: linear-gradient(var(--muse-wash-hover) 0 0);
+  --muse-active-layer: linear-gradient(var(--muse-wash-active) 0 0);
   --muse-press-brightness: .95;
   --muse-focus-width: 2px;
   --muse-focus-offset: 2px;
@@ -271,12 +274,12 @@
    capsule swaps to a real darker blue, because a wash over a saturated fill
    just muddies it. */
 @media (hover: hover) {
-  .muse-button:hover:not(:disabled) { background-image: linear-gradient(var(--muse-wash-hover) 0 0); }
+  .muse-button:hover:not(:disabled) { background-image: var(--muse-hover-layer); }
   .muse-button-primary:hover:not(:disabled) { background-image: none; background-color: var(--muse-primary-hover); }
   .muse-button-float:hover:not(:disabled) { box-shadow: var(--muse-elevation-2); }
   .muse-icon-button[aria-pressed="true"]:hover { background-color: var(--muse-primary-soft); }
 }
-.muse-button:active:not(:disabled) { background-image: linear-gradient(var(--muse-wash-active) 0 0); }
+.muse-button:active:not(:disabled) { background-image: var(--muse-active-layer); }
 .muse-button-primary:active:not(:disabled) { background-image: none; }
 .muse-panel { background: var(--muse-surface); border-radius: var(--muse-radius-panel); padding: 28px; box-shadow: var(--muse-shadow-float); }
 .muse-field { display: grid; gap: 8px; }
@@ -473,6 +476,27 @@
 .muse-theme [data-muse-density="dense"] { --muse-density: .875; --muse-radius-density: .5; }
 .muse-theme[data-muse-density="airy"], [data-muse-density="airy"] .muse-theme,
 .muse-theme [data-muse-density="airy"] { --muse-density: 1.125; --muse-radius-density: 1.2; }
+/* A custom property that uses var() is computed on the element that DECLARES it
+   and inherited as a finished length. Setting only the factor on a nested
+   element would leave every radius and space above it unchanged, so the derived
+   values are declared again wherever the attribute sits (v1.7). */
+.muse-theme [data-muse-density] {
+  --muse-radius-sm: calc(12px * var(--muse-radius-density));
+  --muse-radius-menu: calc(20px * var(--muse-radius-density));
+  --muse-radius-panel: calc(28px * var(--muse-radius-density));
+  --muse-space-1: calc(4px * var(--muse-density));
+  --muse-space-2: calc(8px * var(--muse-density));
+  --muse-space-3: calc(12px * var(--muse-density));
+  --muse-space-4: calc(16px * var(--muse-density));
+  --muse-space-6: calc(24px * var(--muse-density));
+  --muse-space-8: calc(32px * var(--muse-density));
+  --muse-space-12: calc(48px * var(--muse-density));
+  --muse-space-16: calc(64px * var(--muse-density));
+  --muse-radius-card: calc(24px * var(--muse-radius-density));
+  --muse-radius-media: calc(24px * var(--muse-radius-density));
+  --muse-radius-feature: calc(32px * var(--muse-radius-density));
+  --muse-section-y: calc(clamp(56px, 7vw, 100px) * var(--muse-density));
+}
 
 /* Squircle corners where the browser has them; a plain radius everywhere
    else. The superellipse needs about double the radius to read the same. */

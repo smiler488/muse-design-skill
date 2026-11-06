@@ -77,6 +77,12 @@
 
 wash 用半透明而不是实色的理由和次要文字一样：同一条规则在白底、`#F3F4F5` 面板、蓝色行上都成立。
 
+**用图层叠 wash，而不是换底色（v1.7）。** 写成 `background-image: var(--muse-hover-layer)`，其中 `--muse-hover-layer: linear-gradient(var(--muse-wash-hover) 0 0)`。元素原来的底色不动，wash 叠在上面，并被 `border-radius` 一起裁切。迁移已有站点时要注意三点：
+
+- **已经用 `background-image` 画图标的元素**（例如框架搜索框的放大镜）不能套这个图层，否则图标会消失。这类元素底色通常透明，直接用 `background-color: var(--muse-wash-hover)`。
+- **框架自带的悬停底色要映射到 wash**，例如 Infima 的 `--ifm-menu-color-background-hover` 和 `--ifm-hover-overlay`。不映射的话，框架的 5% 加上自写的 7.5% 会叠成两层。
+- **只有可交互元素才有悬停反馈。** 行内 `code`、普通表格单元格不应变色；数据表整行悬停属于可选的阅读辅助。蓝色主按钮仍换成真实的深蓝（wash 盖在饱和色上会发脏）；分组强调色（如导航分类的色调）不受这条约束。
+
 落地页上的导航链接和主按钮**实测悬停没有过渡**（`transition-duration: 0s`）：wash 是立刻出现的。会动的东西用 `.15s` 的默认过渡。
 
 ## Muse 没有做的事（重要）
