@@ -1,14 +1,25 @@
-/* Muse-inspired reference implementation. Sampled colors, proposed geometry/motion.
-   Unofficial; see references/sources.md. Scope with class="muse-theme".
-   Two layers: the default tokens follow the Muse app screenshots; add
-   class="muse-layer-page" for websites — values measured on the official
-   product page (references/product-page.md, v1.2). */
+/* Muse-inspired reference implementation. Unofficial; see references/sources.md.
+   Scope with class="muse-theme".
+   v1.4: the type ramp, text colors and weights below are read from the CSS
+   that platform.muse.ai serves (2026-11-06) — see references/typography.md.
+   Fixed px leading, a named ramp that tightens as it grows, weights 400/500/600
+   only, tracking flat until 40px. Add class="muse-layer-page" for websites
+   (landing display heading + wide layout); references/product-page.md records
+   the separate ai.meta.com/muse marketing page. */
 .muse-theme {
   --muse-bg: #FCFCFC;
   --muse-surface: #FFFFFF;
   --muse-soft: #F3F4F5;
-  --muse-text: #111112;
-  --muse-muted: #67696C;
+  --muse-text: #111112;              /* ai-gray-1100 */
+  /* Secondary text is a translucent near-black, not a solid gray: it keeps the
+     same relationship to white, to #F3F4F5 and to a tinted panel. Over
+     #FCFCFC, a650 composites to #68696B — which is the #67696C sampled from
+     the app screenshots, so the two agree. */
+  --muse-muted: #00040996;           /* ai-gray-a650 — secondary text, 5.2:1 */
+  --muse-text-tertiary: #00040b8f;   /* ai-gray-a600 — lightest step still >=4.5:1 */
+  /* Decoration only — 2.5:1. Never put meaning in it: Muse's own tertiary
+     (ai-gray-a400) fails AA, so it is not offered as a text color here. */
+  --muse-text-quaternary: #0007115e;
   --muse-border: #E3E3E3;
   --muse-primary: #0064D4;
   --muse-on-primary: #FFFFFF;
@@ -33,6 +44,37 @@
   --muse-space-16: 64px;
   --muse-shadow-float: 0 2px 6px rgb(17 17 18 / 4%), 0 10px 28px rgb(17 17 18 / 6%);
   --muse-shadow-panel: 0 8px 24px rgb(17 17 18 / 8%), 0 24px 64px rgb(17 17 18 / 10%);
+  /* ── Type ramp (measured on platform.muse.ai, 2026-11-06) ──────────────
+     Leading is a fixed px value, not a ratio, and the ratio TIGHTENS as the
+     size grows: 11/13 → 16/22 → 30/34 → 48/52. Never restate these as
+     line-height: 1.6. */
+  --muse-caption-2: 11px;      --muse-caption-2-lh: 13px;
+  --muse-caption-1: 12px;      --muse-caption-1-lh: 16px;
+  --muse-footnote: 13px;       --muse-footnote-lh: 18px;
+  --muse-subheadline: 14px;    --muse-subheadline-lh: 20px;
+  --muse-subheadline-lg: 15px; --muse-subheadline-lg-lh: 20px;
+  --muse-body: 16px;           --muse-body-lh: 22px;
+  --muse-response: 16px;       --muse-response-lh: 26px;  /* long-form reading */
+  --muse-body-status: 17px;    --muse-body-status-lh: 22px;
+  --muse-title-3: 18px;        --muse-title-3-lh: 26px;
+  --muse-title-2: 22px;        --muse-title-2-lh: 28px;
+  --muse-title-1: 30px;        --muse-title-1-lh: 34px;
+  --muse-lg-title-3: 34px;     --muse-lg-title-3-lh: 40px;
+  --muse-lg-title-2: 40px;     --muse-lg-title-2-lh: 46px;
+  --muse-lg-title-1: 48px;     --muse-lg-title-1-lh: 52px;
+  /* Weights: the shipped font carries 400–600. 300, 700 and 800 do not exist
+     in it — a CSS 300 renders as 400 there, a real 300 looks washed out. */
+  --muse-weight-regular: 400;
+  --muse-weight-medium: 500;
+  --muse-weight-emphasized: 600;
+  /* Tracking: flat below 40px. Only the big sizes are tightened, and only
+     uppercase gets positive tracking. */
+  --muse-tracking-flat: normal;
+  --muse-tracking-title: -.015em;   /* 40px and up (−0.6px at 40px) */
+  --muse-tracking-display: -.01em;
+  --muse-tracking-caps: .06em;
+  --muse-font-sans: "Hanken Grotesk", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --muse-font-cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
   --muse-ease-out: cubic-bezier(.22, 1, .36, 1);
   --muse-duration-press: 120ms;
   --muse-duration-menu: 180ms;
@@ -40,9 +82,13 @@
   color-scheme: light;
   color: var(--muse-text);
   background: var(--muse-bg);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
-  font-size: 16px;
-  line-height: 1.65;
+  font-family: var(--muse-font-sans), var(--muse-font-cjk);
+  font-size: var(--muse-body);
+  font-weight: var(--muse-weight-regular);
+  line-height: calc(22 / 16);     /* = body 16/22; role classes set exact px */
+  letter-spacing: var(--muse-tracking-flat);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 .muse-theme *, .muse-theme *::before, .muse-theme *::after { box-sizing: border-box; }
 .muse-theme :where(button, input, textarea, select) { font: inherit; }
@@ -51,13 +97,64 @@
   outline-offset: 4px;
 }
 .muse-theme :where(a) { color: var(--muse-primary); text-underline-offset: .2em; }
-.muse-theme :where(p, h1, h2, h3) { margin: 0; }
-.muse-theme :where(h1, h2, h3) { color: var(--muse-text); text-wrap: balance; }
-.muse-theme h1 { font-size: clamp(2rem, 5vw, 2.75rem); line-height: 1.15; font-weight: 600; letter-spacing: -.035em; }
-.muse-theme h2 { font-size: 1.5rem; line-height: 1.3; font-weight: 600; letter-spacing: -.02em; }
-.muse-theme h3 { font-size: 1.125rem; line-height: 1.4; font-weight: 600; }
-.muse-muted { color: var(--muse-muted); }
-.muse-small { font-size: .875rem; }
+.muse-theme :where(p, h1, h2, h3, h4) { margin: 0; }
+/* The browser default for strong/b is 700, which the shipped font does not
+   have. "Emphasized" is 600. */
+.muse-theme :where(strong, b, th) { font-weight: var(--muse-weight-emphasized); }
+.muse-theme :where(h1, h2, h3, h4) {
+  color: var(--muse-text); font-weight: var(--muse-weight-medium);
+  letter-spacing: var(--muse-tracking-flat); text-wrap: balance;
+}
+/* Headings are the ramp, not a ratio. Hierarchy comes from the size step
+   (40 → 30 → 22 → 18), never from going heavier than 500. */
+.muse-theme h1 { font-size: var(--muse-lg-title-2); line-height: var(--muse-lg-title-2-lh); letter-spacing: var(--muse-tracking-title); }
+.muse-theme h2 { font-size: var(--muse-title-1); line-height: var(--muse-title-1-lh); }
+.muse-theme h3 { font-size: var(--muse-title-3); line-height: var(--muse-title-3-lh); }
+.muse-theme h4 { font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); }
+.muse-theme :where(p) { text-wrap: pretty; }
+
+/* ── Type roles. Use these instead of ad-hoc font-size/line-height. ─────── */
+.muse-display {
+  font-size: var(--muse-lg-title-3); line-height: var(--muse-lg-title-3-lh);
+  font-weight: var(--muse-weight-medium); letter-spacing: var(--muse-tracking-display);
+  color: var(--muse-text); text-wrap: balance;
+}
+@media (min-width: 640px)  { .muse-display { font-size: 47px; line-height: 52px; } }
+@media (min-width: 768px)  { .muse-display { font-size: 48px; line-height: 56px; } }
+@media (min-width: 1024px) { .muse-display { font-size: 62px; line-height: 1.1; } }
+.muse-lg-title-1 { font-size: var(--muse-lg-title-1); line-height: var(--muse-lg-title-1-lh); letter-spacing: var(--muse-tracking-title); }
+.muse-lg-title-2 { font-size: var(--muse-lg-title-2); line-height: var(--muse-lg-title-2-lh); letter-spacing: var(--muse-tracking-title); }
+.muse-lg-title-3 { font-size: var(--muse-lg-title-3); line-height: var(--muse-lg-title-3-lh); }
+.muse-title-1    { font-size: var(--muse-title-1);    line-height: var(--muse-title-1-lh); }
+.muse-title-2    { font-size: var(--muse-title-2);    line-height: var(--muse-title-2-lh); }
+.muse-title-3    { font-size: var(--muse-title-3);    line-height: var(--muse-title-3-lh); }
+.muse-body-status{ font-size: var(--muse-body-status);line-height: var(--muse-body-status-lh); }
+.muse-body       { font-size: var(--muse-body);       line-height: var(--muse-body-lh); }
+.muse-subheadline-lg { font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); }
+.muse-subheadline    { font-size: var(--muse-subheadline);    line-height: var(--muse-subheadline-lh); }
+.muse-footnote   { font-size: var(--muse-footnote);   line-height: var(--muse-footnote-lh); }
+.muse-caption    { font-size: var(--muse-caption-1);  line-height: var(--muse-caption-1-lh); }
+:where(.muse-display, .muse-lg-title-1, .muse-lg-title-2, .muse-lg-title-3,
+       .muse-title-1, .muse-title-2, .muse-title-3) { font-weight: var(--muse-weight-medium); color: var(--muse-text); }
+.muse-medium     { font-weight: var(--muse-weight-medium); }
+.muse-emphasized { font-weight: var(--muse-weight-emphasized); }
+.muse-muted      { color: var(--muse-muted); }
+.muse-tertiary   { color: var(--muse-text-tertiary); }
+.muse-small { font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh); }
+/* Long-form reading is the one place leading opens up: 16/26, not 16/22. */
+.muse-prose { max-width: 68ch; font-size: var(--muse-response); line-height: var(--muse-response-lh); }
+.muse-prose :where(p) + :where(p) { margin-top: 1em; }
+
+/* ── CJK (proposed, not measured: the Muse pages carry no CJK) ──────────────
+   Hanzi/Kana need looser leading than 16/22 and must never take the negative
+   tracking the Latin display sizes use — tight tracking jams the glyph boxes
+   together. Mark the element or an ancestor with lang="zh" / lang="ja". */
+.muse-theme :where(:lang(zh), :lang(ja)) { line-height: calc(26 / 16); }
+.muse-theme :where(h1, h2, h3, h4):where(:lang(zh), :lang(ja)),
+:where(.muse-display, .muse-lg-title-1, .muse-lg-title-2):where(:lang(zh), :lang(ja)) {
+  letter-spacing: 0; line-height: 1.3;
+}
+.muse-prose:where(:lang(zh), :lang(ja)) { max-width: 38em; }
 .muse-page { width: min(100% - 40px, 1080px); margin-inline: auto; }
 .muse-reading { max-width: 720px; }
 .muse-stack { display: grid; gap: var(--muse-space-6); }
@@ -67,7 +164,8 @@
   min-height: 44px; max-width: 100%; padding: 10px 20px;
   border: 1px solid transparent; border-radius: var(--muse-radius-pill);
   background: var(--muse-soft); color: var(--muse-text);
-  text-decoration: none; line-height: 1.35; font-weight: 500; cursor: pointer;
+  text-decoration: none; font-size: var(--muse-body); line-height: var(--muse-body-lh);
+  font-weight: var(--muse-weight-medium); cursor: pointer;
   transition: background-color var(--muse-duration-press), transform var(--muse-duration-press) var(--muse-ease-out);
 }
 .muse-button-primary { background: var(--muse-primary); color: var(--muse-on-primary); }
@@ -93,7 +191,7 @@
   position: absolute; z-index: 5; top: 100%; left: 0; width: max-content;
   max-width: min(18rem, calc(100vw - 32px)); padding: 6px 12px;
   border-radius: var(--muse-radius-sm); background: var(--muse-surface); color: var(--muse-text);
-  box-shadow: var(--muse-shadow-float); font-size: .875rem; line-height: 1.5;
+  box-shadow: var(--muse-shadow-float); font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh);
   overflow-wrap: anywhere; visibility: hidden; opacity: 0; transform: translateY(-3px);
   transition: opacity var(--muse-duration-menu), transform var(--muse-duration-menu) var(--muse-ease-out), visibility var(--muse-duration-menu);
 }
@@ -118,8 +216,8 @@
 .muse-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 32px; }
 .muse-row { display: grid; grid-template-columns: 44px minmax(0,1fr); align-items: start; gap: 20px; }
 .muse-row p { margin-top: 6px; color: var(--muse-muted); }
-.muse-object { font-size: 30px; line-height: 1.4; }
-.muse-status { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 4px 12px; border-radius: var(--muse-radius-pill); font-size: .875rem; }
+.muse-object { font-size: var(--muse-title-1); line-height: var(--muse-lg-title-3-lh); }
+.muse-status { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 4px 12px; border-radius: var(--muse-radius-pill); font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh); font-weight: var(--muse-weight-medium); }
 .muse-status-success { color: var(--muse-success); background: var(--muse-success-soft); }
 .muse-status-danger { color: var(--muse-danger); background: var(--muse-danger-soft); }
 .muse-disclosure { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--muse-duration-panel) var(--muse-ease-out), visibility var(--muse-duration-panel); }
@@ -133,40 +231,72 @@
 .muse-dialog::backdrop { background: rgb(17 17 18 / 20%); }
 .muse-dialog[open] { animation: muse-panel-enter var(--muse-duration-panel) var(--muse-ease-out); }
 @keyframes muse-panel-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-/* ── Page layer (v1.2): measured on ai.meta.com/muse, 2026-11-05 ─────────── */
+/* ── Page layer (v1.4) ────────────────────────────────────────────────────
+   Wide layout + landing display heading. Colors now follow the ones
+   platform.muse.ai serves, so a site and the product read as one family.
+   The ai.meta.com/muse marketing page uses a different, lighter-blue set
+   (#FFFFFF / #0A1317 / #5D6C7B / #0457CB / #DADDE1 / #F1F4F7); keep those
+   only if you are matching that page specifically — see product-page.md. */
 .muse-theme.muse-layer-page {
-  --muse-bg: #FFFFFF;
+  --muse-bg: #FCFCFC;
   --muse-surface: #FFFFFF;
-  --muse-soft: #F1F4F7;
-  --muse-band: #F6F6F6;
-  --muse-soft-strong: #E7EBEF;
-  --muse-text: #0A1317;
-  --muse-muted: #5D6C7B;
-  --muse-border: #DADDE1;
-  --muse-primary: #0457CB;
-  --muse-primary-hover: #0349AE;
-  --muse-primary-soft: #E6EFFB;
+  --muse-soft: #F3F4F5;             /* ai-gray-050 */
+  --muse-band: #F3F4F5;             /* bg-secondary band */
+  --muse-soft-strong: #E9EAEB;      /* ai-gray-100 */
+  --muse-text: #111112;             /* ai-gray-1100 */
+  --muse-muted: #00040996;          /* ai-gray-a650 */
+  --muse-border: #000c1e17;         /* ai-gray-a100 — reads on white and on the band */
+  --muse-primary: #0064D4;          /* blue-650 */
+  --muse-primary-hover: #0058BE;    /* blue-700 */
+  --muse-primary-soft: #E6F7FF;     /* blue-050 */
   --muse-radius-card: 24px;
   --muse-radius-media: 24px;
   --muse-radius-feature: 32px;
   --muse-page-gutter: clamp(16px, 2.3vw, 32px);
-  --muse-section-y: clamp(48px, 5.6vw, 80px);
+  --muse-section-y: clamp(56px, 7vw, 100px);
 }
-/* Headings: weight 500 (300 for disclosure titles); hierarchy from size. */
-.muse-layer-page h1 { font-size: clamp(2.5rem, 4.4vw, 4rem); line-height: 1.16; font-weight: 500; letter-spacing: -.01em; }
-.muse-layer-page h2 { font-size: clamp(1.75rem, 2.5vw, 2.25rem); line-height: 1.28; font-weight: 500; letter-spacing: 0; }
-.muse-layer-page h3 { font-size: clamp(1.375rem, 1.95vw, 1.75rem); line-height: 1.22; font-weight: 500; }
+/* On a page the single h1 is the landing display; everything below it stays
+   on the ramp inherited from .muse-theme (30 → 18). Do not invent sizes
+   between the steps, and do not push a heading past weight 500. */
+.muse-layer-page h1 {
+  font-size: var(--muse-lg-title-3); line-height: var(--muse-lg-title-3-lh);
+  letter-spacing: var(--muse-tracking-display);
+}
+@media (min-width: 640px)  { .muse-layer-page h1 { font-size: 47px; line-height: 52px; } }
+@media (min-width: 768px)  { .muse-layer-page h1 { font-size: 48px; line-height: 56px; } }
+@media (min-width: 1024px) { .muse-layer-page h1 { font-size: 62px; line-height: 1.1; } }
+/* A section heading that needs to be louder than 30px takes the next real
+   step, 40/46, not a bigger weight. */
+.muse-layer-page .muse-section-head h2 { font-size: var(--muse-title-1); line-height: var(--muse-title-1-lh); }
 .muse-wide { width: min(100% - 2 * var(--muse-page-gutter), 1376px); margin-inline: auto; }
 .muse-section { padding-block: var(--muse-section-y); }
 .muse-section + .muse-section { border-top: 1px solid var(--muse-border); }
 .muse-band { background: var(--muse-band); }
-.muse-eyebrow { color: var(--muse-primary); font-size: .875rem; line-height: 1.43; letter-spacing: -.01em; text-transform: uppercase; }
-.muse-eyebrow:lang(zh) { text-transform: none; letter-spacing: .04em; }
-.muse-lead { max-width: 52rem; color: var(--muse-muted); font-size: 1.125rem; line-height: 1.45; }
+/* Eyebrow. The marketing page measures −0.01em on its uppercase eyebrow;
+   this skill overrides that to POSITIVE tracking, because uppercase at 14px
+   needs it to stay legible, and platform.muse.ai has no uppercase eyebrow at
+   all. Weight 500 so it holds its own against 30px titles. */
+.muse-eyebrow {
+  color: var(--muse-primary);
+  font-size: var(--muse-subheadline); line-height: var(--muse-subheadline-lh);
+  font-weight: var(--muse-weight-medium);
+  letter-spacing: var(--muse-tracking-caps); text-transform: uppercase;
+}
+.muse-eyebrow:where(:lang(zh), :lang(ja)) { text-transform: none; letter-spacing: .04em; }
+/* Lead = title-3 (18/26), muted. Keep the measure narrow even though the
+   layout is wide: wide page, narrow column. */
+.muse-lead { max-width: 46rem; color: var(--muse-muted); font-size: var(--muse-title-3); line-height: var(--muse-title-3-lh); }
 .muse-section-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 16px 32px; margin-bottom: 48px; }
 .muse-section-head > div { display: grid; gap: 8px; max-width: 52rem; }
-.muse-button-lg { min-height: 52px; padding: 14px 30px; font-weight: 700; }
-.muse-link-arrow { display: inline-flex; align-items: center; gap: 10px; color: var(--muse-primary); font-weight: 600; text-decoration: none; }
+/* Measured: primary CTA 44–46px tall, pill, 17px/22px at weight 500 — it is
+   never 700. Nav links are 15px/20px at 500. */
+.muse-button-lg {
+  min-height: 48px; padding: 13px 24px;
+  font-size: var(--muse-body-status); line-height: var(--muse-body-status-lh);
+  font-weight: var(--muse-weight-medium);
+}
+.muse-nav-link { font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); font-weight: var(--muse-weight-medium); }
+.muse-link-arrow { display: inline-flex; align-items: center; gap: 10px; color: var(--muse-primary); font-size: var(--muse-body); line-height: var(--muse-body-lh); font-weight: var(--muse-weight-medium); text-decoration: none; }
 .muse-link-arrow::before {
   content: ""; width: 32px; height: 32px; flex: none; border: 1px solid var(--muse-border); border-radius: 50%;
   background: center / 12px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none' stroke='%230457CB' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 2.5 8 6l-3.5 3.5'/%3E%3C/svg%3E");
@@ -184,7 +314,11 @@
 .muse-accordion-trigger {
   display: flex; width: 100%; align-items: flex-start; justify-content: space-between; gap: 24px;
   padding: 24px 0; border: 0; background: none; color: var(--muse-text); text-align: left; cursor: pointer;
-  font-size: clamp(1.25rem, 1.7vw, 1.5rem); line-height: 1.25; font-weight: 300;
+  /* The marketing page's CSS says 300, but the font it ships carries 400–600,
+     so it renders at 400. Asking a 300-capable webfont for 300 gives a
+     washed-out heading Muse never shows. Stay at 400. */
+  font-size: var(--muse-title-2); line-height: var(--muse-title-2-lh);
+  font-weight: var(--muse-weight-regular); letter-spacing: var(--muse-tracking-flat);
 }
 .muse-accordion-trigger::after {
   content: ""; width: 20px; height: 20px; flex: none; margin-top: 4px;
@@ -211,7 +345,8 @@
 .muse-guide {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 20px 0 16px;
   border-radius: var(--muse-radius-pill); color: var(--muse-primary); background: var(--muse-primary-soft);
-  font-weight: 600; text-decoration: none;
+  font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh);
+  font-weight: var(--muse-weight-medium); text-decoration: none;
   transition: background-color var(--muse-duration-press), color var(--muse-duration-press), transform var(--muse-duration-press) var(--muse-ease-out);
 }
 .muse-guide:hover, .muse-guide:focus-visible { color: var(--muse-on-primary); background: var(--muse-primary); }
@@ -229,9 +364,9 @@
 .muse-tool-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; padding-block: 24px 40px; border-bottom: 1px solid var(--muse-border); }
 .muse-back { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; color: var(--muse-text); font-weight: 500; text-decoration: none; }
 .muse-back::before { content: ""; width: 8px; height: 8px; border-bottom: 1.5px solid currentColor; border-left: 1.5px solid currentColor; transform: rotate(45deg); }
-.muse-status-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; color: var(--muse-muted); font-size: .875rem; }
+.muse-status-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 16px; color: var(--muse-muted); font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh); }
 .muse-details { flex-basis: 100%; max-width: 44rem; }
-.muse-details summary { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--muse-primary); font-weight: 600; list-style: none; cursor: pointer; }
+.muse-details summary { display: inline-flex; align-items: center; gap: 8px; width: fit-content; color: var(--muse-primary); font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); font-weight: var(--muse-weight-medium); list-style: none; cursor: pointer; }
 .muse-details summary::-webkit-details-marker { display: none; }
 .muse-details summary::before { content: ""; width: 12px; height: 12px; background: linear-gradient(currentColor 0 0) center / 12px 1.5px no-repeat, linear-gradient(currentColor 0 0) center / 1.5px 12px no-repeat; transition: background-size var(--muse-duration-menu) var(--muse-ease-out); }
 .muse-details[open] summary::before { background-size: 12px 1.5px, 1.5px 0; }

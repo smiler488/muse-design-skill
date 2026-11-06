@@ -4,18 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Page layer example</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..600&display=swap">
   <link rel="stylesheet" href="muse.css">
   <style>
     /* Demo-only layout; all colors and type come from muse.css */
     .demo-header { position: sticky; top: 0; z-index: 10; background: rgb(255 255 255 / 92%); }
     .demo-nav { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
     .demo-nav nav { display: flex; gap: 4px; }
-    .demo-nav nav a { padding: 4px 12px; border-radius: 24px; color: var(--muse-text); font-size: .9375rem; text-decoration: none; }
+    .demo-nav nav a { padding: 4px 12px; border-radius: 24px; color: var(--muse-text); font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); font-weight: var(--muse-weight-medium); text-decoration: none; }
     .demo-nav nav a:hover { background: var(--muse-soft); }
-    .demo-art { aspect-ratio: 1; display: grid; place-items: center; font-size: 4rem; }
-    .demo-faq .muse-accordion-trigger { font-weight: 500; font-size: clamp(1.25rem, 2vw, 1.75rem); }
+    .demo-art { aspect-ratio: 1; display: grid; place-items: center; font-size: 56px; }
+    /* FAQ questions step up to title-1 and to weight 500; still on the ramp. */
+    .demo-faq .muse-accordion-trigger { font-size: var(--muse-title-1); line-height: var(--muse-title-1-lh); font-weight: var(--muse-weight-medium); }
     .demo-card-head { display: flex; align-items: center; gap: 16px; margin-bottom: 40px; }
-    .demo-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--muse-text); color: #fff; font-size: .875rem; }
+    .demo-dot { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--muse-text); color: #fff; font-size: var(--muse-subheadline); }
     @media (max-width: 700px) { .demo-nav nav { display: none; } }
   </style>
 </head>
@@ -29,6 +33,17 @@
   </header>
 
   <main>
+    <!-- 0. The page's single h1 sits on the landing display step (34 → 47 → 48 → 62) -->
+    <section class="muse-wide" style="padding-block: var(--muse-section-y)">
+      <p class="muse-eyebrow">Field notebook</p>
+      <h1 style="margin-top:12px">Every reading keeps the field it came from.</h1>
+      <p class="muse-lead" style="margin-top:20px">One record holds the plot, the instrument settings and the canopy state, so a number stays interpretable after the season ends.</p>
+      <div class="muse-actions" style="margin-top:32px">
+        <a class="muse-button muse-button-primary muse-button-lg" href="#features">Open notebook</a>
+        <a class="muse-link-arrow" href="#faq">How records are validated</a>
+      </div>
+    </section>
+
     <section class="muse-section" id="features">
       <div class="muse-wide">
         <div class="muse-section-head">

@@ -4,14 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tool page example</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400..600&display=swap">
   <link rel="stylesheet" href="muse.css">
   <style>
     /* Demo-only layout; colours, type and components come from muse.css */
-    .demo-art { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 5rem; background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
+    .demo-art { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 72px; background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
     .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 16px; margin-top: 40px; }
     .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
     .demo-row .muse-field { flex: 1 1 14rem; }
-    .demo-maturity { padding: 2px 10px; border-radius: 999px; color: var(--muse-success); background: var(--muse-success-soft); font-weight: 600; }
+    .demo-maturity { padding: 2px 10px; border-radius: 999px; color: var(--muse-success); background: var(--muse-success-soft); font-weight: var(--muse-weight-medium); }
     .demo-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   </style>
 </head>
@@ -61,7 +64,7 @@
 
       <div class="demo-grid">
         <form class="muse-tool-panel" onsubmit="return false" aria-labelledby="capture-title">
-          <h2 id="capture-title" style="font-size:1.125rem;font-weight:500">Capture</h2>
+          <h2 id="capture-title" class="muse-title-3">Capture</h2>
           <div class="demo-row">
             <label class="muse-field">Sample ID<input class="muse-input" placeholder="Plot-04-Leaf-12"></label>
           </div>
@@ -72,7 +75,7 @@
           </div>
         </form>
         <section class="muse-tool-panel" aria-labelledby="reading-title">
-          <h2 id="reading-title" style="font-size:1.125rem;font-weight:500">Current reading</h2>
+          <h2 id="reading-title" class="muse-title-3">Current reading</h2>
           <p class="muse-muted">No reading yet. Enable sensors, lay the phone on the leaf and capture.</p>
         </section>
       </div>
