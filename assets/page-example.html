@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="muse.css">
   <style>
     /* Demo-only layout; all colors and type come from muse.css */
-    .demo-header { position: sticky; top: 0; z-index: 10; background: rgb(255 255 255 / 92%); }
+    /* The header is the one glass surface; .muse-material supplies the fill
+       and the blur, with an opaque fallback where backdrop-filter is absent. */
+    .demo-header { position: sticky; top: 0; z-index: 10; }
     .demo-nav { display: flex; align-items: center; justify-content: space-between; min-height: 64px; }
     .demo-nav nav { display: flex; gap: 4px; }
     .demo-nav nav a { padding: 4px 12px; border-radius: 24px; color: var(--muse-text); font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh); font-weight: var(--muse-weight-medium); text-decoration: none; }
@@ -23,8 +25,9 @@
     @media (max-width: 700px) { .demo-nav nav { display: none; } }
   </style>
 </head>
-<body class="muse-theme muse-layer-page">
-  <header class="demo-header">
+<!-- A landing page runs airy: looser spacing, rounder corners. -->
+<body class="muse-theme muse-layer-page" data-muse-density="airy" data-muse-accent="blue">
+  <header class="demo-header muse-material">
     <div class="muse-wide demo-nav">
       <strong>Field Notebook</strong>
       <nav aria-label="Primary"><a href="#features">Features</a><a href="#cards">Data</a><a href="#faq">FAQ</a></nav>
@@ -38,7 +41,9 @@
       <p class="muse-eyebrow">Field notebook</p>
       <h1 style="margin-top:12px">Every reading keeps the field it came from.</h1>
       <p class="muse-lead" style="margin-top:20px">One record holds the plot, the instrument settings and the canopy state, so a number stays interpretable after the season ends.</p>
-      <div class="muse-actions" style="margin-top:32px">
+      <!-- One entrance, on the hero only. The animation exists solely
+           inside prefers-reduced-motion: no-preference. -->
+      <div class="muse-actions muse-reveal-group" style="margin-top:32px">
         <a class="muse-button muse-button-primary muse-button-lg" href="#features">Open notebook</a>
         <a class="muse-link-arrow" href="#faq">How records are validated</a>
       </div>

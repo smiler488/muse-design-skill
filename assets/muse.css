@@ -30,20 +30,46 @@
   --muse-success-soft: #EAF5EC;
   --muse-danger: #B42318;
   --muse-danger-soft: #FFF0EE;
-  --muse-radius-sm: 12px;
-  --muse-radius-menu: 20px;
-  --muse-radius-panel: 28px;
-  --muse-radius-pill: 999px;
-  --muse-space-1: 4px;
-  --muse-space-2: 8px;
-  --muse-space-3: 12px;
-  --muse-space-4: 16px;
-  --muse-space-6: 24px;
-  --muse-space-8: 32px;
-  --muse-space-12: 48px;
-  --muse-space-16: 64px;
-  --muse-shadow-float: 0 2px 6px rgb(17 17 18 / 4%), 0 10px 28px rgb(17 17 18 / 6%);
-  --muse-shadow-panel: 0 8px 24px rgb(17 17 18 / 8%), 0 24px 64px rgb(17 17 18 / 10%);
+  /* ── Density (measured) ─────────────────────────────────────────────────
+     Spacing and radius are each a base times ONE multiplier, so a whole
+     surface retunes from a single attribute instead of a hundred edits:
+       <body data-muse-density="dense">   data UI, tables, tool panels
+       <body data-muse-density="airy">    landing pages, marketing
+     Measured multipliers: dense .875/.5, default 1/1, airy 1.125/1.2 —
+     note radius moves much further than spacing. */
+  --muse-density: 1;
+  --muse-radius-density: 1;
+  --muse-radius-sm: calc(12px * var(--muse-radius-density));
+  --muse-radius-menu: calc(20px * var(--muse-radius-density));
+  --muse-radius-panel: calc(28px * var(--muse-radius-density));
+  --muse-radius-pill: 999px;        /* a pill stays a pill at every density */
+  --muse-space-1: calc(4px * var(--muse-density));
+  --muse-space-2: calc(8px * var(--muse-density));
+  --muse-space-3: calc(12px * var(--muse-density));
+  --muse-space-4: calc(16px * var(--muse-density));
+  --muse-space-6: calc(24px * var(--muse-density));
+  --muse-space-8: calc(32px * var(--muse-density));
+  --muse-space-12: calc(48px * var(--muse-density));
+  --muse-space-16: calc(64px * var(--muse-density));
+  /* ── Elevation (measured) ───────────────────────────────────────────────
+     Two layers, tinted with the text near-black #111112 rather than pure
+     black, so a raised surface stays neutral against the warm-white page.
+     Alphas 8%/4%, 12%/8%, 16%/12%. Three steps is the whole scale. */
+  --muse-elevation-0: none;
+  --muse-elevation-1: 0 2px 8px 0 #11111214, 0 2px 16px 0 #1111120a;
+  --muse-elevation-2: 0 4px 12px 0 #1111121f, 0 6px 24px 0 #11111214;
+  --muse-elevation-3: 0 6px 16px 0 #11111229, 0 8px 32px 0 #1111121f;
+  --muse-shadow-float: var(--muse-elevation-1);   /* v1.1 aliases */
+  --muse-shadow-panel: var(--muse-elevation-3);
+  /* ── Blur materials (measured) ──────────────────────────────────────────
+     Each is a translucent fill that sits ON TOP of backdrop-filter, not a
+     blur radius. Thicker = more opaque = less page showing through. */
+  --muse-blur: 24px;
+  --muse-material-ultrathin: #ffffff80;
+  --muse-material-thin: #ffffff99;
+  --muse-material-regular: #ffffffb3;
+  --muse-material-thick: #ffffffcc;
+  --muse-scrim: #0000001a;          /* dialog backdrop */
   /* ── Type ramp (measured on platform.muse.ai, 2026-11-06) ──────────────
      Leading is a fixed px value, not a ratio, and the ratio TIGHTENS as the
      size grows: 11/13 → 16/22 → 30/34 → 48/52. Never restate these as
@@ -75,10 +101,36 @@
   --muse-tracking-caps: .06em;
   --muse-font-sans: "Hanken Grotesk", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --muse-font-cjk: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei", sans-serif;
-  --muse-ease-out: cubic-bezier(.22, 1, .36, 1);
-  --muse-duration-press: 120ms;
-  --muse-duration-menu: 180ms;
-  --muse-duration-panel: 280ms;
+  /* ── Motion: curves keyed by INTENT, not by "ease-out" (measured) ───────
+     Pick the curve from what is happening and why, then take the duration
+     from the same row below. */
+  --muse-ease-move: cubic-bezier(.17, .17, 0, 1);    /* user-driven move, expand/collapse */
+  --muse-ease-passive: cubic-bezier(.5, 0, .1, 1);   /* movement the user did not start */
+  --muse-ease-quick: cubic-bezier(.1, .9, .2, 1);    /* near-instant start: toggles, presses */
+  --muse-ease-enter: cubic-bezier(.14, 1, .34, 1);   /* something arrives */
+  --muse-ease-exit: cubic-bezier(.45, .1, .2, 1);    /* something leaves */
+  --muse-ease-fade: linear;                          /* opacity alone needs no curve */
+  --muse-ease-out: var(--muse-ease-move);            /* v1.1 alias */
+  /* Durations come in pairs, and OUT IS ALWAYS FASTER THAN IN: arriving may
+     take time, leaving must not cost the user any. */
+  --muse-duration-xxs-in: 100ms;  --muse-duration-xxs-out: 100ms;
+  --muse-duration-xs-in: 200ms;   --muse-duration-xs-out: 150ms;
+  --muse-duration-s-in: 280ms;    --muse-duration-s-out: 200ms;
+  --muse-duration-m-in: 400ms;    --muse-duration-m-out: 350ms;
+  --muse-duration-l-in: 500ms;    --muse-duration-l-out: 350ms;
+  --muse-duration-xl-in: 1000ms;  --muse-duration-xl-out: 1000ms;
+  --muse-stagger: 70ms;           /* between siblings in one entrance */
+  --muse-duration-press: var(--muse-duration-xxs-in);   /* v1.1 aliases */
+  --muse-duration-menu: var(--muse-duration-xs-out);
+  --muse-duration-panel: var(--muse-duration-s-in);
+  /* ── Interaction state (measured) ───────────────────────────────────────
+     Hover is a ~7.5% wash, not a different color; press is a brightness
+     drop, not a scale; focus is a 2px outline held 2px off the control. */
+  --muse-wash-hover: #00000013;
+  --muse-wash-active: #0000001a;
+  --muse-press-brightness: .95;
+  --muse-focus-width: 2px;
+  --muse-focus-offset: 2px;
   color-scheme: light;
   color: var(--muse-text);
   background: var(--muse-bg);
@@ -92,9 +144,11 @@
 }
 .muse-theme *, .muse-theme *::before, .muse-theme *::after { box-sizing: border-box; }
 .muse-theme :where(button, input, textarea, select) { font: inherit; }
-.muse-theme :where(button, a, input, textarea, select):focus-visible {
-  outline: 3px solid var(--muse-primary);
-  outline-offset: 4px;
+/* Measured: 2px outline held 2px off the control, in the accent. Not a glow,
+   not a box-shadow ring — an outline, so it follows the real shape. */
+.muse-theme :where(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: var(--muse-focus-width) solid var(--muse-primary);
+  outline-offset: var(--muse-focus-offset);
 }
 .muse-theme :where(a) { color: var(--muse-primary); text-underline-offset: .2em; }
 .muse-theme :where(p, h1, h2, h3, h4) { margin: 0; }
@@ -166,11 +220,14 @@
   background: var(--muse-soft); color: var(--muse-text);
   text-decoration: none; font-size: var(--muse-body); line-height: var(--muse-body-lh);
   font-weight: var(--muse-weight-medium); cursor: pointer;
-  transition: background-color var(--muse-duration-press), transform var(--muse-duration-press) var(--muse-ease-out);
+  transition: background-color var(--muse-duration-xxs-in) var(--muse-ease-quick),
+              filter var(--muse-duration-xxs-in) var(--muse-ease-quick);
 }
 .muse-button-primary { background: var(--muse-primary); color: var(--muse-on-primary); }
 .muse-button-float { background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
-.muse-button:active:not(:disabled) { transform: scale(.98); }
+/* Press is a brightness drop. Scaling a button moves its label away from the
+   finger that is on it and makes every press read as a bounce. */
+.muse-button:active:not(:disabled) { filter: brightness(var(--muse-press-brightness)); }
 .muse-button:disabled { cursor: not-allowed; color: var(--muse-muted); background: var(--muse-soft); }
 .muse-icon-controls { display: flex; flex-wrap: wrap; gap: 16px; padding-bottom: 40px; }
 .muse-icon-control {
@@ -180,7 +237,7 @@
 .muse-icon-button { width: 48px; height: 48px; padding: 0; border-radius: 16px; }
 .muse-icon-button[aria-pressed="true"] { color: var(--muse-primary); background: var(--muse-primary-soft); }
 .muse-icon-graphic { display: grid; width: 24px; height: 24px; }
-.muse-icon-graphic svg { grid-area: 1 / 1; width: 24px; height: 24px; transition: opacity var(--muse-duration-press) var(--muse-ease-out); }
+.muse-icon-graphic svg { grid-area: 1 / 1; width: 24px; height: 24px; transition: opacity var(--muse-duration-xxs-in) var(--muse-ease-quick); }
 .muse-icon-idle { opacity: var(--muse-icon-rest-opacity); }
 .muse-icon-engaged { opacity: var(--muse-icon-active-opacity); }
 .muse-icon-control:has(:focus-visible),
@@ -193,22 +250,34 @@
   border-radius: var(--muse-radius-sm); background: var(--muse-surface); color: var(--muse-text);
   box-shadow: var(--muse-shadow-float); font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh);
   overflow-wrap: anywhere; visibility: hidden; opacity: 0; transform: translateY(-3px);
-  transition: opacity var(--muse-duration-menu), transform var(--muse-duration-menu) var(--muse-ease-out), visibility var(--muse-duration-menu);
+  transition: opacity var(--muse-duration-xs-out) var(--muse-ease-fade),
+              transform var(--muse-duration-xs-out) var(--muse-ease-exit),
+              visibility var(--muse-duration-xs-out);
 }
 .muse-icon-control[data-label-align="end"] .muse-icon-label { left: auto; right: 0; }
 .muse-icon-control:has(:focus-visible) .muse-icon-label,
-.muse-icon-control[data-touch-label="true"] .muse-icon-label { visibility: visible; opacity: 1; transform: translateY(0); }
+.muse-icon-control[data-touch-label="true"] .muse-icon-label {
+  visibility: visible; opacity: 1; transform: translateY(0);
+  transition-duration: var(--muse-duration-xs-in);
+  transition-timing-function: var(--muse-ease-fade), var(--muse-ease-enter), linear;
+}
 @media (hover: hover) {
   .muse-icon-control:not([data-input="touch"]):hover { --muse-icon-rest-opacity: 0; --muse-icon-active-opacity: 1; }
   .muse-icon-control:not([data-input="touch"]):hover .muse-icon-label { visibility: visible; opacity: 1; transform: translateY(0); }
 }
 .muse-icon-controls .muse-icon-control[data-label-dismissed="true"] .muse-icon-label { visibility: hidden; opacity: 0; }
+/* Hover is a translucent wash laid over whatever is underneath, so one rule
+   works on white, on the soft panel and on a tinted row. Only the primary
+   capsule swaps to a real darker blue, because a wash over a saturated fill
+   just muddies it. */
 @media (hover: hover) {
-  .muse-button:hover:not(:disabled) { background: #E9EBED; }
-  .muse-button-primary:hover:not(:disabled) { background: var(--muse-primary-hover); }
-  .muse-button-float:hover:not(:disabled) { background: var(--muse-soft); }
-  .muse-icon-button[aria-pressed="true"]:hover { background: var(--muse-primary-soft); }
+  .muse-button:hover:not(:disabled) { background-image: linear-gradient(var(--muse-wash-hover) 0 0); }
+  .muse-button-primary:hover:not(:disabled) { background-image: none; background-color: var(--muse-primary-hover); }
+  .muse-button-float:hover:not(:disabled) { box-shadow: var(--muse-elevation-2); }
+  .muse-icon-button[aria-pressed="true"]:hover { background-color: var(--muse-primary-soft); }
 }
+.muse-button:active:not(:disabled) { background-image: linear-gradient(var(--muse-wash-active) 0 0); }
+.muse-button-primary:active:not(:disabled) { background-image: none; }
 .muse-panel { background: var(--muse-surface); border-radius: var(--muse-radius-panel); padding: 28px; box-shadow: var(--muse-shadow-float); }
 .muse-field { display: grid; gap: 8px; }
 .muse-input { width: 100%; min-height: 44px; padding: 12px 16px; border: 1px solid var(--muse-control-border); border-radius: var(--muse-radius-sm); background: var(--muse-surface); color: var(--muse-text); }
@@ -220,7 +289,9 @@
 .muse-status { display: inline-flex; align-items: center; gap: 6px; width: fit-content; padding: 4px 12px; border-radius: var(--muse-radius-pill); font-size: var(--muse-footnote); line-height: var(--muse-footnote-lh); font-weight: var(--muse-weight-medium); }
 .muse-status-success { color: var(--muse-success); background: var(--muse-success-soft); }
 .muse-status-danger { color: var(--muse-danger); background: var(--muse-danger-soft); }
-.muse-disclosure { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--muse-duration-panel) var(--muse-ease-out), visibility var(--muse-duration-panel); }
+/* Expand/collapse takes the move curve — it is the user's own action. */
+.muse-disclosure { display: grid; grid-template-rows: 0fr; visibility: hidden; transition: grid-template-rows var(--muse-duration-s-out) var(--muse-ease-move), visibility var(--muse-duration-s-out); }
+.muse-disclosure[data-open="true"] { transition-duration: var(--muse-duration-s-in); }
 .muse-disclosure[data-open="true"] { grid-template-rows: 1fr; visibility: visible; }
 .muse-disclosure > div { min-height: 0; overflow: hidden; }
 .muse-dialog {
@@ -228,8 +299,9 @@
   border: 0; margin: auto; padding: 28px; border-radius: var(--muse-radius-panel);
   background: var(--muse-surface); color: var(--muse-text); box-shadow: var(--muse-shadow-panel);
 }
-.muse-dialog::backdrop { background: rgb(17 17 18 / 20%); }
-.muse-dialog[open] { animation: muse-panel-enter var(--muse-duration-panel) var(--muse-ease-out); }
+.muse-dialog::backdrop { background: var(--muse-scrim); }
+/* A dialog arrives with the enter curve and the short-in duration. */
+.muse-dialog[open] { animation: muse-panel-enter var(--muse-duration-s-in) var(--muse-ease-enter); }
 @keyframes muse-panel-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 /* ── Page layer (v1.4) ────────────────────────────────────────────────────
    Wide layout + landing display heading. Colors now follow the ones
@@ -249,11 +321,14 @@
   --muse-primary: #0064D4;          /* blue-650 */
   --muse-primary-hover: #0058BE;    /* blue-700 */
   --muse-primary-soft: #E6F7FF;     /* blue-050 */
-  --muse-radius-card: 24px;
-  --muse-radius-media: 24px;
-  --muse-radius-feature: 32px;
+  /* Page-layer radii and the section rhythm follow the same density
+     multipliers, so data-muse-density retunes a whole page, not just the
+     base components. */
+  --muse-radius-card: calc(24px * var(--muse-radius-density));
+  --muse-radius-media: calc(24px * var(--muse-radius-density));
+  --muse-radius-feature: calc(32px * var(--muse-radius-density));
   --muse-page-gutter: clamp(16px, 2.3vw, 32px);
-  --muse-section-y: clamp(56px, 7vw, 100px);
+  --muse-section-y: calc(clamp(56px, 7vw, 100px) * var(--muse-density));
 }
 /* On a page the single h1 is the landing display; everything below it stays
    on the ramp inherited from .muse-theme (30 → 18). Do not invent sizes
@@ -347,7 +422,7 @@
   border-radius: var(--muse-radius-pill); color: var(--muse-primary); background: var(--muse-primary-soft);
   font-size: var(--muse-subheadline-lg); line-height: var(--muse-subheadline-lg-lh);
   font-weight: var(--muse-weight-medium); text-decoration: none;
-  transition: background-color var(--muse-duration-press), color var(--muse-duration-press), transform var(--muse-duration-press) var(--muse-ease-out);
+  transition: background-color var(--muse-duration-xxs-in) var(--muse-ease-quick), color var(--muse-duration-xxs-in) var(--muse-ease-quick);
 }
 .muse-guide:hover, .muse-guide:focus-visible { color: var(--muse-on-primary); background: var(--muse-primary); }
 .muse-guide:active { transform: scale(.98); }
@@ -356,7 +431,7 @@
 .muse-guide-icon .is-open { opacity: 0; }
 .muse-guide:hover .is-closed, .muse-guide:focus-visible .is-closed { opacity: 0; }
 .muse-guide:hover .is-open, .muse-guide:focus-visible .is-open { opacity: 1; }
-.muse-button-forward::after { content: ""; width: 8px; height: 8px; border-top: 1.75px solid currentColor; border-right: 1.75px solid currentColor; transform: rotate(45deg); transition: transform var(--muse-duration-press) var(--muse-ease-out); }
+.muse-button-forward::after { content: ""; width: 8px; height: 8px; border-top: 1.75px solid currentColor; border-right: 1.75px solid currentColor; transform: rotate(45deg); transition: transform var(--muse-duration-xxs-in) var(--muse-ease-quick); }
 .muse-button-forward:hover::after, .muse-button-forward:focus-visible::after { transform: translateX(3px) rotate(45deg); }
 
 /* Research-tool shell: unboxed header, status line with a validation
@@ -383,8 +458,100 @@
   .muse-row { grid-template-columns: 32px minmax(0,1fr); gap: 12px; }
   .muse-object { font-size: 26px; }
 }
+
+/* ── v1.5: density, surface, accent, motion ───────────────────────────────
+   Measured on platform.muse.ai and on the FDS tokens ai.meta.com/muse ships
+   (2026-11-06). See references/motion.md and references/color-surface.md. */
+
+/* Density. One attribute retunes spacing and radius across a whole surface. */
+.muse-theme[data-muse-density="dense"], [data-muse-density="dense"] .muse-theme,
+.muse-theme [data-muse-density="dense"] { --muse-density: .875; --muse-radius-density: .5; }
+.muse-theme[data-muse-density="airy"], [data-muse-density="airy"] .muse-theme,
+.muse-theme [data-muse-density="airy"] { --muse-density: 1.125; --muse-radius-density: 1.2; }
+
+/* Squircle corners where the browser has them; a plain radius everywhere
+   else. The superellipse needs about double the radius to read the same. */
+.muse-squircle { border-radius: var(--muse-squircle-radius, var(--muse-radius-panel)); }
+@supports (corner-shape: squircle) {
+  .muse-squircle {
+    corner-shape: squircle;
+    border-radius: calc(var(--muse-squircle-radius, var(--muse-radius-panel)) * 2);
+  }
+}
+
+/* Elevation and blur materials as utilities. A raised surface picks a step;
+   it does not invent a shadow. */
+.muse-elevation-1 { box-shadow: var(--muse-elevation-1); }
+.muse-elevation-2 { box-shadow: var(--muse-elevation-2); }
+.muse-elevation-3 { box-shadow: var(--muse-elevation-3); }
+/* Glass: the blur does the work, the fill only sets how much shows through.
+   Without backdrop-filter support the fill alone must still be readable, so
+   these fall back to the opaque surface. */
+.muse-material { background: var(--muse-surface); }
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .muse-material {
+    background: var(--muse-material-regular);
+    -webkit-backdrop-filter: blur(var(--muse-blur)) saturate(1.8);
+    backdrop-filter: blur(var(--muse-blur)) saturate(1.8);
+  }
+  .muse-material-thin { background: var(--muse-material-thin); }
+  .muse-material-thick { background: var(--muse-material-thick); }
+}
+
+/* Accent. Every hue below is that hue's "650" step — the one value per hue
+   that clears 4.5:1 BOTH as text on white and as a fill under white text.
+   Swap the accent on the root; never give each section its own hue.
+   Two exceptions are deliberate and enforced in scripts/check_tokens.py:
+   yellow is 3.7:1 and orange is 4.5:1 on white but 4.1:1 on the soft panel,
+   so neither may carry text or sit under a white label — use them as a dot
+   or a bar with the meaning written next to them in the text color. */
+.muse-theme[data-muse-accent="blue"]   { --muse-primary: #0064D4; --muse-primary-hover: #0058BE; --muse-primary-soft: #E6F7FF; }
+.muse-theme[data-muse-accent="indigo"] { --muse-primary: #4553E4; --muse-primary-hover: #3C48CE; --muse-primary-soft: #ECF5FF; }
+.muse-theme[data-muse-accent="purple"] { --muse-primary: #8523C6; --muse-primary-hover: #7620B0; --muse-primary-soft: #F6ECFD; }
+.muse-theme[data-muse-accent="green"]  { --muse-primary: #008200; --muse-primary-hover: #007300; --muse-primary-soft: #E6FBE5; }
+.muse-theme[data-muse-accent="red"]    { --muse-primary: #C01F37; --muse-primary-hover: #AD172F; --muse-primary-soft: #FFEFEE; }
+/* Non-text accents only. */
+.muse-theme { --muse-marker-yellow: #B07C00; --muse-marker-orange: #C65323; }
+
+/* ── Motion utilities ──────────────────────────────────────────────────────
+   Entrances are OPT-IN: the animation only exists inside
+   prefers-reduced-motion: no-preference, so there is no version of the page
+   that animates first and gets corrected afterwards. Everything outside the
+   query is the finished state. */
+.muse-reveal { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .muse-reveal {
+    animation: muse-reveal var(--muse-duration-l-in) var(--muse-ease-enter) backwards;
+  }
+  /* Siblings arrive one stagger apart, and the group is capped: past about
+     six the last item is waiting on choreography, not reading. */
+  .muse-reveal-group > * { animation: muse-reveal var(--muse-duration-m-in) var(--muse-ease-enter) backwards; }
+  .muse-reveal-group > :nth-child(1) { animation-delay: 0ms; }
+  .muse-reveal-group > :nth-child(2) { animation-delay: calc(var(--muse-stagger) * 1); }
+  .muse-reveal-group > :nth-child(3) { animation-delay: calc(var(--muse-stagger) * 2); }
+  .muse-reveal-group > :nth-child(4) { animation-delay: calc(var(--muse-stagger) * 3); }
+  .muse-reveal-group > :nth-child(5) { animation-delay: calc(var(--muse-stagger) * 4); }
+  .muse-reveal-group > :nth-child(n + 6) { animation-delay: calc(var(--muse-stagger) * 5); }
+}
+/* Opacity reaches 1 at 60% while the movement runs to 100%: the content is
+   readable before it has finished settling, so the entrance never feels
+   like lag. Distance is small — 8px, not a half-screen slide. */
+@keyframes muse-reveal {
+  0%   { opacity: 0; transform: translateY(8px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .muse-theme { --muse-duration-press: 0ms; --muse-duration-menu: 0ms; --muse-duration-panel: 0ms; }
+  .muse-theme {
+    --muse-duration-xxs-in: 0ms; --muse-duration-xxs-out: 0ms;
+    --muse-duration-xs-in: 0ms;  --muse-duration-xs-out: 0ms;
+    --muse-duration-s-in: 0ms;   --muse-duration-s-out: 0ms;
+    --muse-duration-m-in: 0ms;   --muse-duration-m-out: 0ms;
+    --muse-duration-l-in: 0ms;   --muse-duration-l-out: 0ms;
+    --muse-duration-xl-in: 0ms;  --muse-duration-xl-out: 0ms;
+    --muse-stagger: 0ms;
+  }
   .muse-theme *, .muse-theme *::before, .muse-theme *::after { animation: none !important; scroll-behavior: auto !important; }
-  .muse-button:active:not(:disabled) { transform: none; }
+  .muse-button:active:not(:disabled) { filter: none; }
 }

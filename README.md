@@ -2,6 +2,8 @@
 
 给 Claude Code 等支持 Agent Skills 的工具使用的 **Muse 风格网页与 app 设计技能**。重点是可复用的颜色、排版、空间、组件状态与交互规则，适用于个人网站改造和应用界面设计。
 
+v1.5 把**动效、色彩系统、层级与密度**也换成实读值：按"意图"命名的缓动曲线（move / passive / quick / enter / exit，透明度用 linear）、成对且**出比进快**的时长、70ms 错峰入场、悬停 wash 与 `brightness()` 按下、2px 聚焦环、三档染色阴影、四档模糊材质、每色相唯一可用档与对比度表（橙黄不承载文字）、以及一个属性重调整个界面的密度系统。另外记录了一条反直觉的实测结论：**Muse 没有滚动视差、没有 sticky、没有滚动驱动动画**，整页只有一个元素带 transition。见 [motion.md](references/motion.md) 与 [color-surface.md](references/color-surface.md)。
+
 v1.4 重做**排版**，来源是 platform.muse.ai 自己提供的 CSS（直接读出其中声明的 token，不是从截图反推）：固定 px 行高、字号越大行高越紧的命名阶梯（11/12/13/14/15/16/17/18/22/30/34/40/48）、只有 400/500/600 三档字重、34px 以下不收字距、半透明近黑的次要文字。这些是"做出来总觉得差一截"最集中的来源，细节与常见退化对照表见 [typography.md](references/typography.md)。
 
 v1.3 补充在研究网站上验证过的组件：两栏首屏、科研工具外壳、成对的教程/打开工具按钮（书本图标悬停翻开）、验证说明展开行、灰面板上的白色次级按钮，以及命名一致与深色图标规则，见 [tool-example.html](assets/tool-example.html)。

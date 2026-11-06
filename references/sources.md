@@ -1,6 +1,6 @@
 # 来源、采样与边界
 
-版本：1.4 · 整理日期：2026-11-06（1.3 / 1.2：2026-11-05；1.1：2026-11-02）。v1.4 重做排版，来源是 platform.muse.ai 自己提供的 CSS（见下）。v1.3 的组件来自在 smiler488.github.io 上的实际改造与截图核对（桌面 1280/1440、手机 390、深色模式），不是 Muse 官网测量。
+版本：1.5 · 整理日期：2026-11-06（1.4 同日）（1.3 / 1.2：2026-11-05；1.1：2026-11-02）。v1.4 重做排版，来源是 platform.muse.ai 自己提供的 CSS（见下）。v1.3 的组件来自在 smiler488.github.io 上的实际改造与截图核对（桌面 1280/1440、手机 390、深色模式），不是 Muse 官网测量。
 
 ## 一手来源
 
@@ -22,6 +22,18 @@
 交叉验证：产品页声明的次要文字 `--ai-gray-a650: #00040996` 叠在 `--ai-gray-025 / bg-primary #FCFCFC` 上合成为 `#68696B`，与 v1.1 从应用截图像素采样得到的 `#67696C` 一致。两条独立取证互相印证了同一个值。
 
 同日用同样方法测了 `smiler488.github.io` 与 `www.dc-ppp.com`，用于定位这两个站点与产品页的具体差异（行高 1.6/1.65、逐级负字距、真 300 与 600/700 字重、实色灰次要文字、无网页字体）。这些是本仓库使用者的站点，不是 Muse 的资产。
+
+## 动效与色彩系统实读（v1.5）
+
+同日（2026-11-06）用同样方法补测了动效、色彩系统、阴影、模糊、圆角与密度：
+
+- 取 `platform.muse.ai` 的三个 CSS chunk 与页面内联 `<style>`，以及 `ai.meta.com/muse` 的内联样式（该页没有外链样式表），读出其中声明的 `--fds-animation-*`（按意图命名的缓动曲线）、`--fds-duration-*`（成对进出时长）、`--shadow-elevation-*`、`--fill-*`、`--ai-gray-*` / 各色相 `*-650`、`--spacing-density` / `--radius-density`、`corner-shape: squircle` 规则。
+- 在 1440×900 实际操作：悬停主按钮与导航链接、Tab 聚焦读聚焦环、逐屏滚动全页后统计 `position: sticky`、`animation-timeline`、`will-change` 与带 transition 的元素数量。**结果为 0 / 0 / 0 / 1**，据此写下"Muse 没有滚动视差与滚动驱动动画"这一条。
+- 对比度是用 WCAG 2.x 相对亮度公式对实测色值计算的，半透明色先与背景合成；`scripts/check_tokens.py` 会复算并在回归时失败。
+
+结果整理在 [motion.md](motion.md) 与 [color-surface.md](color-surface.md)。
+
+**排除项**：`platform.muse.ai` 内联了第三方 toast 组件库（sonner）的样式表，其中的 `.4s ease`、`swipe-out-*` 关键帧等**不是 Muse 的设计**，没有收录。区分页面自有 token 与 vendored 库是这次取证的一部分。
 
 ## 颜色采样（应用层）
 

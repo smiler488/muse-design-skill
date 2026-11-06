@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="muse.css">
   <style>
     /* Demo-only layout; colours, type and components come from muse.css */
-    .demo-art { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 72px; background: var(--muse-surface); box-shadow: var(--muse-shadow-float); }
+    .demo-art { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: 72px; background: var(--muse-surface); box-shadow: var(--muse-elevation-1); }
     .demo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: 16px; margin-top: 40px; }
     .demo-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; }
     .demo-row .muse-field { flex: 1 1 14rem; }
@@ -18,7 +18,9 @@
     .demo-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
   </style>
 </head>
-<body class="muse-theme muse-layer-page">
+<!-- A research tool runs dense: tighter spacing and markedly squarer
+     corners (the radius multiplier moves further than the spacing one). -->
+<body class="muse-theme muse-layer-page" data-muse-density="dense">
   <main class="muse-wide">
     <!-- 1. Two-column hero -->
     <section class="muse-hero" aria-labelledby="hero-title">
