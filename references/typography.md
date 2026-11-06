@@ -46,6 +46,18 @@ v1.2 的 [product-page.md](product-page.md) 测的是另一个页面（营销页
 --font-weight-semibold: 600    行内强调、表头（"-emphasized"）
 ```
 
+**本技能的角色分配（v1.7，作者覆盖实测值）**：Muse 平台把按钮写成 500，但它的官网（ai.meta.com/muse）上按钮、"Learn more"、菜单分组名都是明显的粗体。在 Hanken Grotesk 这类字体上，500 的 14–17px 标签读起来偏细。所以：
+
+| 角色 | 字重 | 变量 |
+|---|---|---|
+| 正文、导语、说明 | 400 | `--muse-weight-regular` |
+| 各级标题、导航链接 | 500 | `--muse-weight-medium` |
+| 按钮、胶囊、筛选、箭头链接、返回、当前项、展开行 | 600 | `--muse-weight-action` |
+| 眉标 | 600 | `--muse-weight-eyebrow` |
+| 行内强调、表头 | 600 | `--muse-weight-emphasized` |
+
+想要更安静的页面，把 `--muse-weight-action` 改回 500，一处生效。
+
 **300 在 Muse 的字体里不存在。** 营销页 CSS 写了 `font-weight: 300` 的展开项标题，但字体只有 400–600，浏览器把它钳到 400 渲染。如果你换成一个真有 300 的字体（Hanken Grotesk、Inter 都有），就会得到一个 Muse 从未显示过的、发虚的标题。**不要用 300，也不要用 700/800。**
 
 ## 字距（实测）
@@ -113,7 +125,8 @@ Muse 自己的 `tertiary`（`ai-gray-a400`）对白底只有 **2.5:1**，不达 
 | 层级靠猜 | 36px / 26px / 19px 这类自定字号 | 阶梯上的 40 / 30 / 22 / 18 |
 | 灰字在灰卡上变脏 | 实色 `#5D6C7B` | 半透明 `#00040996` |
 | 字体没有性格 | 只有系统字体栈 | 真的加载一个几何无衬线 |
-| 主按钮像促销 | `font-weight: 700` | 17/22、字重 500 |
+| 主按钮像促销 | `font-weight: 700` | 17/22、字重 600（`--muse-weight-action`） |
+| 按钮、链接、标签整体发虚 | 交互文字都用 400/500 | 能按、能跟随的用 600；只有正文留在 400 |
 | 大写眉标挤成一团 | `text-transform: uppercase` + 负字距 | +0.06em |
 
 ## 与 product-page.md（营销页）的差异

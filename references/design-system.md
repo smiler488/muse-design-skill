@@ -19,7 +19,7 @@
 | `--muse-primary` | `#0064D4` | 采样：批准卡 Allow 按钮 | 主要操作、文字链接、焦点 |
 | `--muse-on-primary` | `#FFFFFF` | 建议：语义映射 | 主要按钮上的文字；品牌色变亮时重新选择 |
 | `--muse-primary-hover` | `#0058BD` | 建议 | 蓝色按钮悬停 |
-| `--muse-primary-soft` | `#E8F2FF` | 建议 | 轻量选中底色，不承担普通文字颜色 |
+| `--muse-primary-soft` | `#E8F2FF` | 建议 | **不做控件填充**（v1.7）。选中态用实心主色或灰色胶囊（`--muse-fill-selected`），见 color-surface.md |
 | `--muse-control-border` | `#828589` | 建议 | 输入框等必须可辨识的控件边界 |
 | `--muse-success` / `--muse-success-soft` | `#237A39` / `#EAF5EC` | 建议 | 完成、已连接；配文字/图标 |
 | `--muse-danger` / `--muse-danger-soft` | `#B42318` / `#FFF0EE` | 建议 | 错误、破坏性操作；配文字/图标 |
