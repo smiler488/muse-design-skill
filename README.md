@@ -2,7 +2,7 @@
 
 给 Claude Code 等支持 Agent Skills 的工具使用的 **Muse 风格网页与 app 设计技能**。重点是可复用的颜色、排版、空间、组件状态与交互规则，适用于个人网站改造和应用界面设计。
 
-v1.7 把一个研究网站的整站迁移经验写回技能。修复了 `muse.css` 的嵌套密度问题：`data-muse-density` 写在内层区块上时，只改了系数，没改圆角和间距，因为派生变量在声明处就已算好，现在会在带属性的元素上重新声明。新增 `--muse-hover-layer` 和 `--muse-active-layer`，把 wash 作为图层叠在元素原有底色上。补充了 wash 的三条例外（已有背景图标的元素、框架自带悬停色的映射、非交互元素不加悬停）。新增阅读页规格：46rem 正文、14rem 目录，16/26 行高只用于长文段落。另列出批量迁移动效时最容易误伤的几处。见 [website.md](references/website.md)、[motion.md](references/motion.md) 与 [color-surface.md](references/color-surface.md)。
+v1.7 把一个研究网站的整站迁移经验写回技能。修复了 `muse.css` 的嵌套密度问题：`data-muse-density` 写在内层区块上时，只改了系数，没改圆角和间距，因为派生变量在声明处就已算好，现在会在带属性的元素上重新声明。新增 `--muse-hover-layer` 和 `--muse-active-layer`，把 wash 作为图层叠在元素原有底色上。补充了 wash 的三条例外（已有背景图标的元素、框架自带悬停色的映射、非交互元素不加悬停）。新增阅读页规格：46rem 正文、14rem 目录，16/26 行高只用于长文段落。另列出批量迁移动效时最容易误伤的几处。眉标字重改为 `--muse-weight-eyebrow` 变量，默认 600（实测 400 的小号蓝色大写在大标题上方显得发虚）。见 [website.md](references/website.md)、[motion.md](references/motion.md) 与 [color-surface.md](references/color-surface.md)。
 
 v1.5 把**动效、色彩系统、层级与密度**也换成实读值：按"意图"命名的缓动曲线（move / passive / quick / enter / exit，透明度用 linear）、成对且**出比进快**的时长、70ms 错峰入场、悬停 wash 与 `brightness()` 按下、2px 聚焦环、三档染色阴影、四档模糊材质、每色相唯一可用档与对比度表（橙黄不承载文字）、以及一个属性重调整个界面的密度系统。另外记录了一条反直觉的实测结论：**Muse 没有滚动视差、没有 sticky、没有滚动驱动动画**，整页只有一个元素带 transition。见 [motion.md](references/motion.md) 与 [color-surface.md](references/color-surface.md)。
 

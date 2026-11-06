@@ -93,6 +93,10 @@
   --muse-weight-regular: 400;
   --muse-weight-medium: 500;
   --muse-weight-emphasized: 600;
+  /* Eyebrows (v1.7): measured 400 on the product page; this skill sets them
+     semibold so 14px blue caps read as a label above a 500 title. Override
+     to var(--muse-weight-medium) for a quieter page. */
+  --muse-weight-eyebrow: var(--muse-weight-emphasized);
   /* Tracking: flat below 40px. Only the big sizes are tightened, and only
      uppercase gets positive tracking. */
   --muse-tracking-flat: normal;
@@ -353,11 +357,12 @@
 /* Eyebrow. The marketing page measures −0.01em on its uppercase eyebrow;
    this skill overrides that to POSITIVE tracking, because uppercase at 14px
    needs it to stay legible, and platform.muse.ai has no uppercase eyebrow at
-   all. Weight 500 so it holds its own against 30px titles. */
+   all. Weight from --muse-weight-eyebrow (600 by default) so the small caps
+   hold their own against 30-48px titles. */
 .muse-eyebrow {
   color: var(--muse-primary);
   font-size: var(--muse-subheadline); line-height: var(--muse-subheadline-lh);
-  font-weight: var(--muse-weight-medium);
+  font-weight: var(--muse-weight-eyebrow);
   letter-spacing: var(--muse-tracking-caps); text-transform: uppercase;
 }
 .muse-eyebrow:where(:lang(zh), :lang(ja)) { text-transform: none; letter-spacing: .04em; }
