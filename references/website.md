@@ -49,6 +49,8 @@
 - 删除悬停时的 `transform` 时，**保留功能性位移**：提示框的 `translate(-50%, 0)` 居中、箭头或 chevron 的 2px 前移提示、图标换形。只删放大、抬起这类装饰。
 - `box-shadow: none` 往往是在压制框架的默认悬停阴影，不能和"悬停加阴影"一起删掉。
 - 替换完成后清理留下的空规则块，并重新跑 lint 和渲染核对。
+- 悬停规则整体移入 `@media (hover: hover)`，否则手机点一下卡片会一直停在 wash 状态。`a:hover, a:focus-visible` 这类合写的选择器要拆开，聚焦样式留在媒体查询外面。移动前先查一遍：有没有规则靠悬停来显示菜单或内容（`display` / `visibility` 写在 `:hover` 的后代上）。这类规则不能移，要改成点击展开。验证时，设置 `hover` 媒体特性的模拟不一定生效；改用触屏手机视口加 `tap()`，并确认 `matchMedia('(hover: hover)')` 返回的是 false。
+- 框架自带的"当前项"样式也要排查。例如 Infima 面包屑当前项默认是 wash 底配主色字，看起来就是浅主色胶囊，要用 `--ifm-breadcrumb-item-background-active` 和 `--ifm-breadcrumb-color-active` 改成选中灰配正文色。用脚本审计浅主色底时要注意：`color-mix()` 的计算值是 `color(srgb r g b / a)` 格式，只解析 `rgb()` 会漏掉它们。
 
 ## 可交给实现智能体的任务例子
 
